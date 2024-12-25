@@ -1,0 +1,60 @@
+/******************************** hide arraws input number ***********************/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.fa-file-word:hover {
+    color: #14539A;
+}
+
+.select2-container--disabled .select2-selection {
+    cursor: not-allowed;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.ck-editor__editable {
+    max-height: 100px;
+    min-height: 100px;
+}
+
+.typeahead {
+    max-height: 150px;
+    overflow-y: scroll;
+    scrollbar-width:20px;
+}
+
+.typeahead li {
+    padding: 5px;
+    max-width: 250px;
+   
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.typeahead li.active {
+    background-color: #eee;
+    max-width: 250px;
+
+}
