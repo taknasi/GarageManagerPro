@@ -85,7 +85,6 @@
                                         <i class="ki-outline ki-gift fs-2tx mb-5 ms-n1 text-gray-500"></i>
                                         <span class="fs-4 fw-bold">User Profile</span>
                                     </a>
-                                    <!--end::Card-->
                                 </div>
                                 <!--end::Col-->
                                 <!--begin::Col-->
