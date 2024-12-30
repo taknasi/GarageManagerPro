@@ -46,6 +46,54 @@
 
             <!-- Main Content -->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_toolbar" class="app-toolbar py-6">
+                    <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex align-items-start">
+                        <!--begin::Toolbar container-->
+                        <div class="d-flex flex-column flex-row-fluid">
+                            <!--begin::Toolbar wrapper-->
+                            <div class="d-flex align-items-center pt-1">
+                                <!--begin::Breadcrumb-->
+                                <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                                    <!--begin::Item-->
+                                    <li class="breadcrumb-item text-white fw-bold lh-1">
+                                        <a href="{{route("index")}}" class="text-white text-hover-primary">
+                                            <i class="bi bi-house text-gray-700 fs-6"></i>
+                                        </a>
+                                    </li>
+                                    <!--end::Item-->
+                                    <!--begin::Item-->
+                                    <li class="breadcrumb-item">
+                                        <i class="bi bi-arrow-right fs-7 text-gray-700 mx-n1"></i>
+                                    </li>
+                                    <!--end::Item-->
+                                    <!--begin::Item-->
+                                    <li class="breadcrumb-item text-white fw-bold lh-1">Clients</li>
+                                    <!--end::Item-->
+                                    <li class="breadcrumb-item">
+                                        <i class="bi bi-arrow-right fs-7 text-gray-700 mx-n1"></i>
+                                    </li>
+                                    <li class="breadcrumb-item text-white fw-bold lh-1">Nouveau client</li>
+                                </ul>
+                                <!--end::Breadcrumb-->
+                            </div>
+                            <!--end::Toolbar wrapper=-->
+                            <!--begin::Toolbar wrapper=-->
+                            <div class="d-flex flex-stack flex-wrap flex-lg-nowrap gap-4 gap-lg-10 pt-13 pb-6">
+                                <!--begin::Page title-->
+                                <div class="page-title me-5">
+                                    <!--begin::Title-->
+                                    <h1 class="page-heading d-flex text-white fw-bold fs-2 flex-column justify-content-center my-0">
+                                        Nouveau Client
+                                    </h1>
+                                </div>
+                            </div>
+                            <!--end::Toolbar wrapper=-->
+                        </div>
+                        <!--end::Toolbar container=-->
+                    </div>
+                    <!--end::Toolbar container-->
+                </div>
+                @yield('headerUnerMenu')
                 @yield('content')
             </div>
 

@@ -24,6 +24,10 @@ Route::group(['middleware' => 'auth'], function () {
     /******************************** Users **********************************************/
     Route::view('users', 'pages.Utilisateurs.utilisateurs')->name('users')->middleware('admin');
     /******************************** End Users ******************************************/
+
+    /******************************** Clients **********************************************/
+    Route::resource('clients', 'ClientController');
+    /******************************** End Clients ******************************************/
 });
 /******************************** Login and disabled register ****************************/
 Auth::routes(['register' => false]);

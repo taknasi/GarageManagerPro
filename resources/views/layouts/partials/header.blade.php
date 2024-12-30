@@ -39,10 +39,49 @@
                         </a>
                     </div> --}}
                     <div class="menu-item me-0 me-lg-2">
-                        <a class="menu-link active" href="">
+                        <a class="menu-link" href="">
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </div>
+                    {{-- --------------------------------- clients  ---------------------------------------------------}}
+                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
+                        class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                        <!--begin:Menu link-->
+                        <span class="menu-link {{ request()->routeIs('clients.*') ? 'active' : '' }}">
+                            <span class="menu-title">Clients</span>
+                            <span class="menu-arrow d-lg-none"></span>
+                        </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div
+                            class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-250px">
+                            <!--begin:Menu item-->
+                            <div data-kt-menu-trigger="{default:'click', lg: 'hover'}"
+                                data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ request()->routeIs('clients.create') ? 'active' : '' }}" href="{{ route('clients.create') }}">
+                                    <span class="menu-icon">
+                                        <i class="bi bi-person-plus-fill fs-2"></i>
+                                    </span>
+                                    <span class="menu-title">Nouveau Client</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <div data-kt-menu-trigger="{default:'click', lg: 'hover'}"
+                                data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ request()->routeIs('clients.index') ? 'active' : '' }}" href="{{ route('clients.index') }}">
+                                    <span class="menu-icon">
+                                        <i class="bi bi-people-fill fs-2"></i>
+                                    </span>
+                                    <span class="menu-title">Liste des clients</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        </div>
+                        <!--end:Menu sub-->
+                    </div>
+                    {{-- --------------------------------- end clients  ---------------------------------------------------}}
 
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
                         class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -119,7 +158,8 @@
                             </h3>
                             <!--end::Title-->
                             <!--begin::Tabs-->
-                            <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9" role="tablist">
+                            <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9"
+                                role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link text-white opacity-75 opacity-state-100 pb-4"
                                         data-bs-toggle="tab" href="#kt_topbar_notifications_1" aria-selected="false"
