@@ -24,7 +24,11 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('pages.clients.create',);
+        // Get the next ID for display
+        $lastId = Client::latest('id_client')->value('id_client') ?? 0;
+        $nextId = $lastId + 1;
+        
+        return view('pages.clients.create', compact('nextId'));
     }
 
     /**

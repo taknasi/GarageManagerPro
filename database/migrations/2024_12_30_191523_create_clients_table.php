@@ -14,8 +14,9 @@ class CreateClientsTable extends Migration
     public function up()
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id');   
             // Common fields
+            $table->integer('id_client');
             $table->enum('type', ['particulier', 'societe'])->default('particulier');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
@@ -33,8 +34,9 @@ class CreateClientsTable extends Migration
             $table->string('contact_person')->nullable(); // Gérant/dirigeant
 
             // Nouveaux champs pour informations légales
-            $table->string('rc_number')->nullable();  // Numéro de registre de commerce (RC)
-            $table->string('ice')->nullable();        // ICE
+            $table->string('cin')->nullable();       // Carte d'Identité Nationale
+            $table->string('rc_number')->nullable(); // Numéro de registre de commerce (RC)
+            $table->string('ice')->nullable();       // ICE
 
             // Adresse (commune à tous types de clients)
             $table->string('address')->nullable();
