@@ -64,8 +64,8 @@
                                                 <label for="client_id" class="form-label">Identifiant Client :</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" id="client_id"
-                                                        name="client_id" readonly
-                                                        value="{{ old('client_id', $nextId ?? '') }}"
+                                                        name="id_client" readonly
+                                                        value="{{ old('id_client', $nextId ?? '') }}"
                                                         placeholder="Auto-généré">
                                                     <span class="input-group-text">
                                                         <i class="bi bi-patch-check fs-2"></i>
@@ -76,17 +76,17 @@
                                         <div class="row">
                                             <div class="col-sm-6 mb-5 ">
                                                 <label for="Civilité" class="form-label">Civilité :</label>
-                                                <div class="rounded border p-3 border-gray-300 ">
+                                                <div id="civility" class="rounded border p-3 border-gray-300 ">
                                                     <!-- Mr -->
                                                     <div class="form-check form-check-inline">
                                                         <input 
                                                             class="form-check-input me-3"
                                                             type="radio"
-                                                            name="radio2"
+                                                            name="civility"
                                                             id="flexCheckMr"
                                                             value="Monsieur"
                                                             @if (old('civility') == 'Monsieur' || !old('civility')) checked @endif
-                                                            onclick="setCivilite('Monsieur')"
+                                                            {{-- onclick="setCivilite('Monsieur')" --}}
                                                         >
                                                         <label class="form-check-label me-3 text-gray-700 fw-bold" for="flexCheckMr">
                                                             Monsieur 
@@ -98,11 +98,11 @@
                                                         <input 
                                                             class="form-check-input me-3"
                                                             type="radio"
-                                                            name="radio2"
+                                                            name="civility"
                                                             id="flexCheckMme"
                                                             value="Madame"
                                                             @if (old('civility') == 'Madame') checked @endif
-                                                            onclick="setCivilite('Madame')"
+                                                            {{-- onclick="setCivilite('Madame')" --}}
                                                         >
                                                         <label class="form-check-label me-3 text-gray-700 fw-bold" for="flexCheckMme">
                                                             Madame 
@@ -111,7 +111,7 @@
                                                 </div>
                                                 
                                                 <!-- Hidden input to store the civility -->
-                                                <input type="hidden" name="civility" id="civility" value="{{ old('civility') ?? 'Monsieur' }}">
+                                                {{-- <input type="hidden" name="civility" id="civility" value="{{ old('civility') ?? 'Monsieur' }}"> --}}
                                                 @error('civility')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -136,13 +136,15 @@
 
                                             <!-- COMPANY_NAME (shown if type=societe) -->
                                             <div class="col-sm-6  mb-5">
-                                                <label for="company_name" class="form-label">Raison sociale (Société)
+                                                <label for="company_name" class="form-label required">Raison sociale (Société)
                                                     :</label>
                                                 <div class="input-group">
                                                     <input type="text"
                                                         class="form-control @error('company_name') is-invalid @enderror"
                                                         id="company_name" name="company_name"
-                                                        value="{{ old('company_name') }}" />
+                                                        placeholder="Nom de la société"
+                                                        value="{{ old('company_name') }}"
+                                                        data-required-if="societe" />
                                                     <span class="input-group-text">
                                                         <i class="bi bi-building fs-2"></i>
                                                     </span>
@@ -221,7 +223,12 @@
                                                     </span>
                                                     <input type="tel"
                                                         class="form-control @error('phone') is-invalid @enderror"
-                                                        id="phone" name="phone" value="{{ old('phone') }}" />
+                                                        id="phone" name="phone" value="{{ old('phone') }}"
+                                                        pattern="[0-9]{10}"
+                                                        placeholder="Ex: 0600000000"
+                                                        title="Veuillez entrer un numéro de téléphone à 10 chiffres"
+                                                        maxlength="10"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                                                 </div>
                                                 @error('phone')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -237,7 +244,11 @@
                                                     </span>
                                                     <input type="email"
                                                         class="form-control @error('email') is-invalid @enderror"
-                                                        id="email" name="email" value="{{ old('email') }}" />
+                                                        id="email" name="email" value="{{ old('email') }}"
+                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                        placeholder="exemple@domaine.com"
+                                                        title="Veuillez entrer une adresse email valide"
+                                                         />
                                                 </div>
                                                 @error('email')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -373,23 +384,24 @@
                 '#legal_form',
                 '#contact_person',
                 '#rc_number',
-                '#ice', // Adding ICE field
-                // Add any other society-specific field IDs here
+                '#ice',
             ];
 
             const particulierFields = [
                 '#civility',
                 '#full_name',
-                // Add any other particulier-specific field IDs here
             ];
 
             if (type === 'particulier') {
-                // Enable Particulier fields and disable Société fields
                 particulierFields.forEach(field => {
                     const element = document.querySelector(field)?.closest('.col-sm-6');
                     if (element) {
                         element.style.display = 'block';
-                        document.querySelector(field).disabled = false;
+                        const input = document.querySelector(field);
+                        input.disabled = false;
+                        if (input.hasAttribute('data-required-if')) {
+                            input.removeAttribute('required');
+                        }
                     }
                 });
 
@@ -397,16 +409,23 @@
                     const element = document.querySelector(field)?.closest('.col-sm-6');
                     if (element) {
                         element.style.display = 'none';
-                        document.querySelector(field).disabled = true;
+                        const input = document.querySelector(field);
+                        input.disabled = true;
+                        if (input.hasAttribute('data-required-if')) {
+                            input.removeAttribute('required');
+                        }
                     }
                 });
             } else {
-                // Enable Société fields and disable Particulier fields
                 societyFields.forEach(field => {
                     const element = document.querySelector(field)?.closest('.col-sm-6');
                     if (element) {
                         element.style.display = 'block';
-                        document.querySelector(field).disabled = false;
+                        const input = document.querySelector(field);
+                        input.disabled = false;
+                        if (input.hasAttribute('data-required-if') && input.getAttribute('data-required-if') === type) {
+                            input.setAttribute('required', '');
+                        }
                     }
                 });
 
@@ -414,7 +433,11 @@
                     const element = document.querySelector(field)?.closest('.col-sm-6');
                     if (element) {
                         element.style.display = 'none';
-                        document.querySelector(field).disabled = true;
+                        const input = document.querySelector(field);
+                        input.disabled = true;
+                        if (input.hasAttribute('data-required-if')) {
+                            input.removeAttribute('required');
+                        }
                     }
                 });
             }

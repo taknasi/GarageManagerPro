@@ -98,6 +98,7 @@
             </div>
 
             <!-- Footer -->
+            @include('sweetalert::alert')
             @include('layouts.partials.footer')
         </div>
     </div>

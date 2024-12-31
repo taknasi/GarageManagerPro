@@ -34,7 +34,7 @@ class CreateClientsTable extends Migration
             $table->string('contact_person')->nullable(); // Gérant/dirigeant
 
             // Nouveaux champs pour informations légales
-            $table->string('cin')->nullable();       // Carte d'Identité Nationale
+            // $table->string('cin')->nullable();       // Carte d'Identité Nationale
             $table->string('rc_number')->nullable(); // Numéro de registre de commerce (RC)
             $table->string('ice')->nullable();       // ICE
 
