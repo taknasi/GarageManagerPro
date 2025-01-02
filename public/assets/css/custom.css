@@ -58,3 +58,7 @@ input[type=number] {
     max-width: 250px;
 
 }
+
+.card-border-warning {
+    border-bottom: 3px solid #ffc107 !important; /* Warning color (yellow/orange) */
+  }

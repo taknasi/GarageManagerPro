@@ -5,6 +5,47 @@
 @push('styles')
 @endpush('styles')
 
+@section('headerUnderMenu')
+    <!--begin::Toolbar wrapper-->
+    <div class="d-flex align-items-center pt-1">
+        <!--begin::Breadcrumb-->
+        <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+            <!--begin::Item-->
+            <li class="breadcrumb-item text-white fw-bold lh-1">
+                <a href="{{ route('index') }}" class="text-white text-hover-primary">
+                    <i class="bi bi-house text-gray-700 fs-6"></i>
+                </a>
+            </li>
+            <!--end::Item-->
+            <!--begin::Item-->
+            <li class="breadcrumb-item">
+                <i class="bi bi-arrow-right fs-7 text-gray-700 mx-n1"></i>
+            </li>
+            <!--end::Item-->
+            <!--begin::Item-->
+            <li class="breadcrumb-item text-white fw-bold lh-1">Clients</li>
+            <!--end::Item-->
+            <li class="breadcrumb-item">
+                <i class="bi bi-arrow-right fs-7 text-gray-700 mx-n1"></i>
+            </li>
+            <li class="breadcrumb-item text-white fw-bold lh-1">Nouveau client</li>
+        </ul>
+        <!--end::Breadcrumb-->
+    </div>
+    <!--end::Toolbar wrapper=-->
+    <!--begin::Toolbar wrapper=-->
+    <div class="d-flex flex-stack flex-wrap flex-lg-nowrap gap-4 gap-lg-10 pt-13 pb-6">
+        <!--begin::Page title-->
+        <div class="page-title me-5">
+            <!--begin::Title-->
+            <h1 class="page-heading d-flex text-white fw-bold fs-2 flex-column justify-content-center my-0">
+                Nouveau Client
+            </h1>
+        </div>
+    </div>
+    <!--end::Toolbar wrapper=-->
+@endsection
+
 @section('content')
     <div class="app-container container-xxl">
         <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -14,7 +55,7 @@
                 <div id="kt_app_content" class="app-content flex-column-fluid">
                     <form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data">
                         @csrf
-                        <div class="card pt-3 mb-5 ">
+                        <div class="card-border-warning card pt-3 mb-5 ">
 
                             <!--begin::Card body-->
                             <div class="card-body">
@@ -35,7 +76,8 @@
                                                             <span
                                                                 class="nav-text text-gray-800 fw-bolder fs-7 lh-1">Particulier</span>
                                                             <span
-                                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-warning"></span>
+                                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-warning"
+                                                                style="background-color: #fcc1b5 !important"></span>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item mb-3 flex-fill" onclick="setType('societe')">
@@ -49,7 +91,8 @@
                                                             <span
                                                                 class="nav-text text-gray-800 fw-bolder fs-7 lh-1">Société</span>
                                                             <span
-                                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-warning"></span>
+                                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-warning"
+                                                                style="background-color: #fcc1b5 !important"></span>
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -79,37 +122,29 @@
                                                 <div id="civility" class="rounded border p-3 border-gray-300 ">
                                                     <!-- Mr -->
                                                     <div class="form-check form-check-inline">
-                                                        <input 
-                                                            class="form-check-input me-3"
-                                                            type="radio"
-                                                            name="civility"
-                                                            id="flexCheckMr"
-                                                            value="Monsieur"
+                                                        <input class="form-check-input me-3" type="radio" name="civility"
+                                                            id="flexCheckMr" value="Monsieur"
                                                             @if (old('civility') == 'Monsieur' || !old('civility')) checked @endif
-                                                            {{-- onclick="setCivilite('Monsieur')" --}}
-                                                        >
-                                                        <label class="form-check-label me-3 text-gray-700 fw-bold" for="flexCheckMr">
-                                                            Monsieur 
+                                                            {{-- onclick="setCivilite('Monsieur')" --}}>
+                                                        <label class="form-check-label me-3 text-gray-700 fw-bold"
+                                                            for="flexCheckMr">
+                                                            Monsieur
                                                         </label>
                                                     </div>
-                                                
+
                                                     <!-- Mme -->
                                                     <div class="form-check form-check-inline">
-                                                        <input 
-                                                            class="form-check-input me-3"
-                                                            type="radio"
-                                                            name="civility"
-                                                            id="flexCheckMme"
-                                                            value="Madame"
+                                                        <input class="form-check-input me-3" type="radio" name="civility"
+                                                            id="flexCheckMme" value="Madame"
                                                             @if (old('civility') == 'Madame') checked @endif
-                                                            {{-- onclick="setCivilite('Madame')" --}}
-                                                        >
-                                                        <label class="form-check-label me-3 text-gray-700 fw-bold" for="flexCheckMme">
-                                                            Madame 
+                                                            {{-- onclick="setCivilite('Madame')" --}}>
+                                                        <label class="form-check-label me-3 text-gray-700 fw-bold"
+                                                            for="flexCheckMme">
+                                                            Madame
                                                         </label>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <!-- Hidden input to store the civility -->
                                                 {{-- <input type="hidden" name="civility" id="civility" value="{{ old('civility') ?? 'Monsieur' }}"> --}}
                                                 @error('civility')
@@ -136,14 +171,14 @@
 
                                             <!-- COMPANY_NAME (shown if type=societe) -->
                                             <div class="col-sm-6  mb-5">
-                                                <label for="company_name" class="form-label required">Raison sociale (Société)
+                                                <label for="company_name" class="form-label required">Raison sociale
+                                                    (Société)
                                                     :</label>
                                                 <div class="input-group">
                                                     <input type="text"
                                                         class="form-control @error('company_name') is-invalid @enderror"
                                                         id="company_name" name="company_name"
-                                                        placeholder="Nom de la société"
-                                                        value="{{ old('company_name') }}"
+                                                        placeholder="Nom de la société" value="{{ old('company_name') }}"
                                                         data-required-if="societe" />
                                                     <span class="input-group-text">
                                                         <i class="bi bi-building fs-2"></i>
@@ -224,8 +259,7 @@
                                                     <input type="tel"
                                                         class="form-control @error('phone') is-invalid @enderror"
                                                         id="phone" name="phone" value="{{ old('phone') }}"
-                                                        pattern="[0-9]{10}"
-                                                        placeholder="Ex: 0600000000"
+                                                        pattern="[0-9]{10}" placeholder="Ex: 0600000000"
                                                         title="Veuillez entrer un numéro de téléphone à 10 chiffres"
                                                         maxlength="10"
                                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
@@ -247,8 +281,7 @@
                                                         id="email" name="email" value="{{ old('email') }}"
                                                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                         placeholder="exemple@domaine.com"
-                                                        title="Veuillez entrer une adresse email valide"
-                                                         />
+                                                        title="Veuillez entrer une adresse email valide" />
                                                 </div>
                                                 @error('email')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -423,7 +456,8 @@
                         element.style.display = 'block';
                         const input = document.querySelector(field);
                         input.disabled = false;
-                        if (input.hasAttribute('data-required-if') && input.getAttribute('data-required-if') === type) {
+                        if (input.hasAttribute('data-required-if') && input.getAttribute('data-required-if') ===
+                            type) {
                             input.setAttribute('required', '');
                         }
                     }
