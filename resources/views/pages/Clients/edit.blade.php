@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nouveau Client | Garage Manager Pro')
+@section('title', 'Modifier Client | Garage Manager Pro')
 
 @push('styles')
 @endpush('styles')
@@ -28,7 +28,7 @@
             <li class="breadcrumb-item">
                 <i class="bi bi-arrow-right fs-7 text-gray-700 mx-n1"></i>
             </li>
-            <li class="breadcrumb-item text-white fw-bold lh-1">Nouveau client</li>
+            <li class="breadcrumb-item text-white fw-bold lh-1">Modifier client</li>
         </ul>
         <!--end::Breadcrumb-->
     </div>
@@ -39,7 +39,7 @@
         <div class="page-title me-5">
             <!--begin::Title-->
             <h1 class="page-heading d-flex text-white fw-bold fs-2 flex-column justify-content-center my-0">
-                Nouveau Client
+                Modifier Client
             </h1>
         </div>
     </div>
@@ -53,8 +53,9 @@
             <div class="d-flex flex-column flex-column-fluid">
                 <!--begin::Content-->
                 <div id="kt_app_content" class="app-content flex-column-fluid">
-                    <form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('clients.update', $client->id) }}" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="card-border-warning card pt-3 mb-5 ">
 
                             <!--begin::Card body-->
@@ -68,7 +69,7 @@
                                                         onclick="setType('particulier')">
                                                         <a class="nav-link btn btn-outline btn-flex btn-active-color-primary flex-column 
                                                                overflow-hidden w-100 h-85px pt-5 pb-2
-                                                               @if (old('type') == 'particulier' || !old('type')) active @endif"
+                                                               @if ($client->type == 'particulier') active @endif"
                                                             data-bs-toggle="pill">
                                                             <div class="nav-icon mb-3">
                                                                 <i class="fa fa-user fs-1 p-0"></i>
@@ -83,7 +84,7 @@
                                                     <li class="nav-item mb-3 flex-fill" onclick="setType('societe')">
                                                         <a class="nav-link btn btn-outline btn-flex btn-active-color-primary flex-column 
                                                                overflow-hidden w-100 h-85px pt-5 pb-2
-                                                               @if (old('type') == 'societe') active @endif"
+                                                               @if ($client->type == 'societe') active @endif"
                                                             data-bs-toggle="pill">
                                                             <div class="nav-icon mb-3">
                                                                 <i class="fa fa-building fs-1 p-0"></i>
@@ -97,7 +98,7 @@
                                                     </li>
                                                 </ul>
                                                 <input type="hidden" name="type" id="type"
-                                                    value="{{ old('type', 'particulier') }}">
+                                                    value="{{ $client->type }}">
                                                 @error('type')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -107,8 +108,7 @@
                                                 <label for="client_id" class="form-label">Identifiant Client :</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" id="client_id"
-                                                        name="id_client" readonly
-                                                        value="{{ old('id_client', $nextId ?? '') }}"
+                                                        name="id_client" readonly value="{{ $client->id_client }}"
                                                         placeholder="Auto-généré">
                                                     <span class="input-group-text">
                                                         <i class="bi bi-patch-check fs-2"></i>
@@ -124,8 +124,7 @@
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input me-3" type="radio" name="civility"
                                                             id="flexCheckMr" value="Monsieur"
-                                                            @if (old('civility') == 'Monsieur' || !old('civility')) checked @endif
-                                                            {{-- onclick="setCivilite('Monsieur')" --}}>
+                                                            @if ($client->civility == 'Monsieur') checked @endif>
                                                         <label class="form-check-label me-3 text-gray-700 fw-bold"
                                                             for="flexCheckMr">
                                                             Monsieur
@@ -136,8 +135,7 @@
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input me-3" type="radio" name="civility"
                                                             id="flexCheckMme" value="Madame"
-                                                            @if (old('civility') == 'Madame') checked @endif
-                                                            {{-- onclick="setCivilite('Madame')" --}}>
+                                                            @if ($client->civility == 'Madame') checked @endif>
                                                         <label class="form-check-label me-3 text-gray-700 fw-bold"
                                                             for="flexCheckMme">
                                                             Madame
@@ -158,7 +156,7 @@
                                                 <div class="input-group">
                                                     <input type="text"
                                                         class="form-control @error('full_name') is-invalid @enderror"
-                                                        id="full_name" name="full_name" value="{{ old('full_name') }}"
+                                                        id="full_name" name="full_name" value="{{ $client->full_name }}"
                                                         required />
                                                     <span class="input-group-text">
                                                         <i class="bi bi-person-check-fill fs-2"></i>
@@ -178,8 +176,8 @@
                                                     <input type="text"
                                                         class="form-control @error('company_name') is-invalid @enderror"
                                                         id="company_name" name="company_name"
-                                                        placeholder="Nom de la société" value="{{ old('company_name') }}"
-                                                        data-required-if="societe" />
+                                                        placeholder="Nom de la société"
+                                                        value="{{ $client->company_name }}" data-required-if="societe" />
                                                     <span class="input-group-text">
                                                         <i class="bi bi-building fs-2"></i>
                                                     </span>
@@ -200,41 +198,41 @@
                                                             data-placeholder="Sélectionner la forme juridique">
                                                             <option></option>
                                                             <option value="SA"
-                                                                {{ old('legal_form') === 'SA' ? 'selected' : '' }}>SA -
+                                                                {{ $client->legal_form === 'SA' ? 'selected' : '' }}>SA -
                                                                 Société
                                                                 Anonyme</option>
                                                             <option value="SARL"
-                                                                {{ old('legal_form', 'SARL') === 'SARL' ? 'selected' : '' }}>
+                                                                {{ $client->legal_form === 'SARL' ? 'selected' : '' }}>
                                                                 SARL -
                                                                 Société à Responsabilité Limitée</option>
                                                             <option value="SARL AU"
-                                                                {{ old('legal_form') === 'SARL AU' ? 'selected' : '' }}>
+                                                                {{ $client->legal_form === 'SARL AU' ? 'selected' : '' }}>
                                                                 SARL AU -
                                                                 SARL à Associé Unique</option>
                                                             <option value="SNC"
-                                                                {{ old('legal_form') === 'SNC' ? 'selected' : '' }}>SNC -
+                                                                {{ $client->legal_form === 'SNC' ? 'selected' : '' }}>SNC -
                                                                 Société
                                                                 en Nom Collectif</option>
                                                             <option value="SCS"
-                                                                {{ old('legal_form') === 'SCS' ? 'selected' : '' }}>SCS -
+                                                                {{ $client->legal_form === 'SCS' ? 'selected' : '' }}>SCS -
                                                                 Société
                                                                 en Commandite Simple</option>
                                                             <option value="SCA"
-                                                                {{ old('legal_form') === 'SCA' ? 'selected' : '' }}>SCA -
+                                                                {{ $client->legal_form === 'SCA' ? 'selected' : '' }}>SCA -
                                                                 Société
                                                                 en Commandite par Actions</option>
                                                             <option value="GIE"
-                                                                {{ old('legal_form') === 'GIE' ? 'selected' : '' }}>GIE -
+                                                                {{ $client->legal_form === 'GIE' ? 'selected' : '' }}>GIE -
                                                                 Groupement d'Intérêt Économique</option>
                                                             <option value="SP"
-                                                                {{ old('legal_form') === 'SP' ? 'selected' : '' }}>SP -
+                                                                {{ $client->legal_form === 'SP' ? 'selected' : '' }}>SP -
                                                                 Société en
                                                                 Participation</option>
                                                             <option value="SUCCURSALE"
-                                                                {{ old('legal_form') === 'SUCCURSALE' ? 'selected' : '' }}>
+                                                                {{ $client->legal_form === 'SUCCURSALE' ? 'selected' : '' }}>
                                                                 Succursale</option>
                                                             <option value="AUTO ENTREPRENEUR"
-                                                                {{ old('legal_form') === 'AUTO ENTREPRENEUR' ? 'selected' : '' }}>
+                                                                {{ $client->legal_form === 'AUTO ENTREPRENEUR' ? 'selected' : '' }}>
                                                                 Auto Entrepreneur</option>
                                                         </select>
 
@@ -258,7 +256,7 @@
                                                     </span>
                                                     <input type="tel"
                                                         class="form-control @error('phone') is-invalid @enderror"
-                                                        id="phone" name="phone" value="{{ old('phone') }}"
+                                                        id="phone" name="phone" value="{{ $client->phone }}"
                                                         pattern="[0-9]{10}" placeholder="Ex: 0600000000"
                                                         title="Veuillez entrer un numéro de téléphone à 10 chiffres"
                                                         maxlength="10"
@@ -278,13 +276,15 @@
                                                     </span>
                                                     <input type="email"
                                                         class="form-control @error('email') is-invalid @enderror"
-                                                        id="email" name="email" value="{{ old('email') }}"
+                                                        id="email" name="email" value="{{ $client->email }}"
                                                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                         placeholder="exemple@domaine.com"
                                                         title="Veuillez entrer une adresse email valide" />
                                                 </div>
                                                 @error('email')
-                                                    <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -302,7 +302,7 @@
                                             <input type="text"
                                                 class="form-control @error('contact_person') is-invalid @enderror"
                                                 id="contact_person" name="contact_person" placeholder="Nom du contact"
-                                                value="{{ old('contact_person') }}" />
+                                                value="{{ $client->contact_person }}" />
                                             <span class="input-group-text">
                                                 <i class="bi bi-person fs-2"></i>
                                             </span>
@@ -319,7 +319,7 @@
                                         <div class="input-group">
                                             <input type="text"
                                                 class="form-control @error('rc_number') is-invalid @enderror"
-                                                id="rc_number" name="rc_number" value="{{ old('rc_number') }}" />
+                                                id="rc_number" name="rc_number" value="{{ $client->rc_number }}" />
                                             <span class="input-group-text">
                                                 <i class="bi bi-receipt fs-2"></i>
                                             </span>
@@ -334,7 +334,7 @@
                                         <label for="ice" class="form-label">ICE :</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control @error('ice') is-invalid @enderror"
-                                                id="ice" name="ice" value="{{ old('ice') }}" />
+                                                id="ice" name="ice" value="{{ $client->ice }}" />
                                             <span class="input-group-text">
                                                 <i class="bi bi-123 fs-2"></i>
                                             </span>
@@ -349,7 +349,7 @@
                                     <!-- ADDRESS -->
                                     <div class="col-sm-6 col-xl-4 mb-5">
                                         <label for="address" class="form-label">Adresse :</label>
-                                        <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="1">{{ old('address') }}</textarea>
+                                        <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="1">{{ $client->address }}</textarea>
                                         @error('address')
                                             <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -363,6 +363,14 @@
                                                 <select name="city" id="city"
                                                     class="form-select rounded-0 rounded-start @error('city') is-invalid @enderror">
                                                     <option value="">Sélectionner une ville</option>
+                                                    <option value="Casablanca"
+                                                        {{ $client->city === 'Casablanca' ? 'selected' : '' }}>Casablanca
+                                                    </option>
+                                                    <option value="Rabat"
+                                                        {{ $client->city === 'Rabat' ? 'selected' : '' }}>Rabat</option>
+                                                    <option value="Marrakech"
+                                                        {{ $client->city === 'Marrakech' ? 'selected' : '' }}>Marrakech
+                                                    </option>
                                                 </select>
                                             </div>
                                             <span class="input-group-text">
@@ -378,7 +386,7 @@
                                     <div class="col-sm-6 col-xl-4 mb-5">
                                         <label for="notes" class="form-label">Notes :</label>
                                         <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" rows="1"
-                                            placeholder="Observations, commentaires...">{{ old('notes') }}</textarea>
+                                            placeholder="Observations, commentaires...">{{ $client->notes }}</textarea>
                                         @error('notes')
                                             <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -390,11 +398,8 @@
 
                         <!-- Submit Buttons -->
                         <div class="d-flex">
-                            <button type="submit" name="store" value="Enregistrer" class="btn btn-primary me-2">
-                                <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer
-                            </button>
-                            <button type="submit" name="store" value="save_and_new" class="btn btn-light-primary me-2">
-                                <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer et ajouter un autre
+                            <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                                <i class="bi bi-check-lg fs-4 me-2"></i>Mettre à jour
                             </button>
                             <a href="{{ route('clients.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left fs-4 me-2"></i>Retour
@@ -519,7 +524,7 @@
             });
 
             // Set initial value if exists
-            const initialCity = '{{ old('city') }}';
+            const initialCity = '{{ $client->city }}';
             if (initialCity) {
                 $('#city').val(initialCity).trigger('change');
             }

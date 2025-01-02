@@ -23,8 +23,21 @@ class ClientRequest extends FormRequest
     {
         $rules = [
             'type' => 'required|in:particulier,societe',
-            'id_client' => 'required|string|unique:clients,id_client',
-            'email' => 'nullable|email|unique:clients,email',
+        ];
+
+        // Handle unique validation differently for create and update
+        if ($this->isMethod('POST')) {
+            // Create - require unique values
+            $rules['id_client'] = 'required|string|unique:clients,id_client';
+            $rules['email'] = 'nullable|email|unique:clients,email';
+        } else {
+            // Update - ignore current record in unique check
+            $clientId = $this->route('client'); // Get the client ID from route
+            $rules['email'] = 'nullable|email|unique:clients,email,' . $clientId . ',id';
+        }
+
+        // Common rules
+        $rules += [
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
