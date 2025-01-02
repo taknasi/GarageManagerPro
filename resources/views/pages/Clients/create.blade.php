@@ -389,15 +389,16 @@
                         </div>
 
                         <!-- Submit Buttons -->
-                        <div class="d-grid gap-2 d-sm-flex justify-content-md-start mb-5">
-                            <button type="submit" class="btn btn-primary me-md-2" name="store" value="Enregistrer">
-                                <i class="bi bi-check2-circle fs-2"></i>
-                                Enregistrer
+                        <div class="d-flex">
+                            <button type="submit" name="action" value="save" class="btn btn-primary me-2">
+                                <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer
                             </button>
-                            <button type="submit" class="btn btn-primary" name="store"
-                                value="Enregistrer et ajouter un autre">
-                                Enregistrer et ajouter un autre client
+                            <button type="submit" name="action" value="save_and_new" class="btn btn-info me-2">
+                                <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer et ajouter un autre
                             </button>
+                            <a href="{{ route('clients.index') }}" class="btn btn-light-danger">
+                                <i class="bi bi-x-lg fs-4 me-2"></i>Annuler
+                            </a>
                         </div>
                     </form>
 

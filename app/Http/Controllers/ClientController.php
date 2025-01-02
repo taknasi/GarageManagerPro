@@ -18,7 +18,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-       
+        return view('pages.clients.clients');
     }
 
     /**
@@ -31,7 +31,7 @@ class ClientController extends Controller
         // Get the next ID for display
         $lastId = Client::latest('id_client')->value('id_client') ?? 0;
         $nextId = $lastId + 1;
-        
+
         return view('pages.clients.create', compact('nextId'));
     }
 
@@ -43,13 +43,13 @@ class ClientController extends Controller
      */
     public function store(ClientRequest $request)
     {
-        
+
         try {
             DB::beginTransaction();
-            
+
             // Create new client instance
             $client = new Client();
-            
+
             // Common fields for both types
             $client->id_client = $request->id_client;
             $client->type = $request->type;
@@ -58,11 +58,11 @@ class ClientController extends Controller
             $client->address = $request->address;
             $client->city = $request->city;
             $client->notes = $request->notes;
-            
+
             // Type-specific fields
             if ($request->type === 'particulier') {
                 $client->full_name = $request->full_name;
-                $client->civility= $request->civility;
+                $client->civility = $request->civility;
             } else {
                 $client->company_name = $request->company_name;
                 $client->legal_form = $request->legal_form;
@@ -70,11 +70,11 @@ class ClientController extends Controller
                 $client->rc_number = $request->rc_number;
                 $client->ice = $request->ice;
             }
-            
+
             $client->save();
-            
+
             DB::commit();
-            
+
             $this->successAddR();
 
             if ($request->store == "Enregistrer") {
@@ -82,7 +82,6 @@ class ClientController extends Controller
             } else {
                 return redirect()->route('clients.create');
             }
-                
         } catch (\Exception $ex) {
             DB::rollBack();
             $this->catchingR($ex);
