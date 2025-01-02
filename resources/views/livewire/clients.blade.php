@@ -16,7 +16,7 @@
                 </div>
 
                 <span class="input-group-text col-sm-5 text-gray-500">
-                    <i class="bi bi-people text-primary fs-2 me-4"></i>
+                    <i class="bi bi-people-fill text-primary fs-2 me-4"></i>
                     <span class="text-gray-700 me-2 fw-bolder">{{ $clients->total() ?? 0 }}</span> clients
                 </span>
                 <!--end::Search-->

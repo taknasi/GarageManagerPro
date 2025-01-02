@@ -20,56 +20,89 @@
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
     @stack('styles')
     <style>
-        body {
-            background-color: #fff !important;
-            padding: 5px 20px 20px 20px;
+        /* General Styles */
+        .pdf-container {
+            padding: 20px;
+            max-width: 100%;
         }
 
-        h1 {
-            color: #1a5276;
-            background-color: #f1faff;
-            text-align: center;
-            padding: 6px;
+        .pdf-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
         }
 
-        thead {
-            display: table-header-group;
-        }
-
-        #header {
-            font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
+        .pdf-table {
             width: 100%;
+            margin-bottom: 1rem;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
         }
 
-        #header td,
-        #header th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        #header tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        #header tr:hover {
-            background-color: #ddd;
-        }
-
-        #header th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
+        .pdf-table th {
             background-color: #009EF7;
             color: white;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+            padding: 12px 8px;
         }
 
-        .td3 {
-            width: 30%;
-            color: #3081EA;
+        .pdf-table td {
+            padding: 8px;
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
         }
 
+        .pdf-table tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Print Specific Styles */
         @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 11pt;
+                line-height: 1.4;
+                background-color: #fff !important;
+            }
+
+            .pdf-container {
+                padding: 0;
+            }
+
+            .pdf-title {
+                font-size: 18pt;
+                margin: 10px 0;
+            }
+
+            .pdf-table {
+                page-break-inside: auto;
+                border-collapse: collapse;
+            }
+
+            .pdf-table thead {
+                display: table-header-group;
+            }
+
+            .pdf-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            .pdf-table th {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .pdf-table td {
+                font-size: 10pt;
+            }
+
+            .font-weight-bold {
+                font-weight: bold !important;
+            }
             #print_Button {
                 display: none;
             }
