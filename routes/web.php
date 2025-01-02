@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /******************************** Clients **********************************************/
     Route::resource('clients', 'ClientController');
+    Route::view('/liste.clients', 'pages.Clients.pdf')->name('liste.clients');
     /******************************** End Clients ******************************************/
 });
 /******************************** Login and disabled register ****************************/

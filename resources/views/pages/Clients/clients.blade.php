@@ -62,5 +62,9 @@
 
 @push('scripts')
     <script src="{{ asset('assets/plugins/global/select2-fr.min.js') }}"></script>
-    
+    <script>
+        window.addEventListener('print', event => {
+            window.open("{{ URL::to('/liste.clients') }}", "_blank");
+        });
+    </script>
 @endpush

@@ -1,31 +1,24 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-<!--begin::Head-->
-
-<!DOCTYPE html>
-
-<html lang="fr">
-<!--begin::Head-->
 
 <head>
-    <title>Argos | Gestion de Dossier et Investigation</title>
+    <title>@yield('title', 'Garage Manager Pro')</title>
     <meta charset="utf-8" />
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+    <meta name="description" content="@yield('meta_description', 'Garage Manager Pro - Professional Garage Management System')" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="" />
-    <meta property="og:site_name" content="Argos" />
+    <meta property="og:title" content="@yield('og_title', 'Garage Manager Pro')" />
     <link rel="shortcut icon" href="{{ asset('assets/media/favicon.ico') }}" />
-    <!--begin::Fonts(mandatory for all pages)-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-    <!--end::Fonts-->
-    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+
+    <!-- Global Stylesheets Bundle -->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <!--end::Global Stylesheets Bundle-->
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
+    @stack('styles')
     <style>
         body {
             background-color: #fff !important;
@@ -98,7 +91,9 @@
             window.print();
         }
     </script>
-    @include('layouts.footer-scripts')
+    <!-- Global Javascript Bundle -->
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 </body>
 
 </html>

@@ -114,7 +114,7 @@
                                             <i class="bi bi-pencil-fill pe-0"></i>
                                         </a>
                                         <button type="button"
-                                            wire:click='deletedId({{ $client->id }},"{{ $client->nom }}")'
+                                          wire:click='deletedId({{ $client->id }}, "{{ $client->type === 'particulier' ? $client->full_name : $client->company_name }}")'
                                             data-bs-toggle="modal" data-bs-target="#kt_modal_supprimer"
                                             class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
                                             title="Supprimer" data-bs-original-title="Supprimer">
@@ -156,6 +156,5 @@
         </div>
         <!--end::Card body-->
     </div>
-    {{-- @include('pages.Clients.modals')
-    @include('pages.Clients.modal-new-client') --}}
+    @include('pages.Clients.modals')
 </div>

@@ -111,8 +111,6 @@ class Clients extends Component
         try {
             $client = Client::find($this->deleteId);
             if ($client) {
-                $client->delete_by = Auth::user()->id;
-                $client->save();
                 $client->delete();
                 $this->successDelete();
             } else {
