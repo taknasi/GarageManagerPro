@@ -26,11 +26,19 @@ class Clients extends Component
     public $deleteNomClient;
 
     // Filter
-    public $nom;
-    public $responsable;
-    public $telephone;
+    public $id_client;
+    public $type;
+    public $phone;
     public $email;
-    public $adresse;
+    public $civility;
+    public $full_name;
+    public $company_name;
+    public $legal_form;
+    public $contact_person;
+    public $rc_number;
+    public $ice;
+    public $address;
+    public $city;
     public $dateDe;
     public $dateA;
     public $activateFilter = false;
@@ -77,20 +85,44 @@ class Clients extends Component
 
     public function filterByField($query)
     {
-        if ($this->nom) {
-            $query->where('nom', 'like', '%' . $this->nom . '%');
+        if ($this->id_client) {
+            $query->where('id_client', 'like', '%' . $this->id_client . '%');
         }
-        if ($this->responsable) {
-            $query->where('responsable', 'like', '%' . $this->responsable . '%');
+        if ($this->type) {
+            $query->where('type', $this->type);
         }
-        if ($this->telephone) {
-            $query->where('telephone', 'like', '%' . $this->telephone . '%');
+        if ($this->phone) {
+            $query->where('phone', 'like', '%' . $this->phone . '%');
         }
         if ($this->email) {
             $query->where('email', 'like', '%' . $this->email . '%');
         }
-        if ($this->adresse) {
-            $query->where('adresse', 'like', '%' . $this->adresse . '%');
+        if ($this->civility) {
+            $query->where('civility', 'like', '%' . $this->civility . '%');
+        }
+        if ($this->full_name) {
+            $query->where('full_name', 'like', '%' . $this->full_name . '%');
+        }
+        if ($this->company_name) {
+            $query->where('company_name', 'like', '%' . $this->company_name . '%');
+        }
+        if ($this->legal_form) {
+            $query->where('legal_form', 'like', '%' . $this->legal_form . '%');
+        }
+        if ($this->contact_person) {
+            $query->where('contact_person', 'like', '%' . $this->contact_person . '%');
+        }
+        if ($this->rc_number) {
+            $query->where('rc_number', 'like', '%' . $this->rc_number . '%');
+        }
+        if ($this->ice) {
+            $query->where('ice', 'like', '%' . $this->ice . '%');
+        }
+        if ($this->address) {
+            $query->where('address', 'like', '%' . $this->address . '%');
+        }
+        if ($this->city) {
+            $query->where('city', 'like', '%' . $this->city . '%');
         }
         if ($this->dateDe && $this->dateA) {
             $query->whereBetween('created_at', [
@@ -131,11 +163,19 @@ class Clients extends Component
     public function resetInputFields()
     {
         $this->dispatchBrowserEvent('empty');
-        $this->nom = null;
-        $this->responsable = null;
-        $this->telephone = null;
+        $this->id_client = null;
+        $this->type = null;
+        $this->phone = null;
         $this->email = null;
-        $this->adresse = null;
+        $this->civility = null;
+        $this->full_name = null;
+        $this->company_name = null;
+        $this->legal_form = null;
+        $this->contact_person = null;
+        $this->rc_number = null;
+        $this->ice = null;
+        $this->address = null;
+        $this->city = null;
         $this->dateDe = null;
         $this->dateA = null;
         $this->activateFilter = false;

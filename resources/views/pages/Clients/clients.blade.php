@@ -62,7 +62,12 @@
 
 @push('scripts')
     <script src="{{ asset('assets/plugins/global/select2-fr.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/global/flatpickr-fr.js') }}"></script>
     <script>
+        $(".flatpickr-input").flatpickr({
+            dateFormat: "d-m-Y",
+            locale: "fr",
+        });
         window.addEventListener('print', event => {
             window.open("{{ URL::to('/liste.clients') }}", "_blank");
         });

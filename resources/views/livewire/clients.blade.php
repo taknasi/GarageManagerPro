@@ -1,6 +1,6 @@
 <div>
     {{-- Do your work, then step back. --}}
-    <div class="card">
+    <div class="card ">
         <!--begin::Card header-->
         <div class="card-header border-0 pt-6">
             <!--begin::Card title-->
@@ -41,7 +41,7 @@
                     <!--end::Filter-->
 
                     <div data-bs-toggle="tooltip" data-bs-original-title="Nouveau client" aria-label="Nouveau client">
-                        <a type="button" class="btn btn-primary me-3" href="{{route('clients.create')}}">
+                        <a type="button" class="btn btn-primary me-3" href="{{ route('clients.create') }}">
                             <i class="bi bi-person-plus-fill fs-2"></i>
                             <span class="d-none d-sm-inline">Nouveau client</span>
                         </a>
@@ -74,8 +74,8 @@
                             </th>
                             <th scope="col">Client </th>
                             <th scope="col">Téléphone </th>
-                            <th scope="col" >Email </th>
-                            <th scope="col" >Ville </th>
+                            <th scope="col">Email </th>
+                            <th scope="col">Ville </th>
                             <th scope="col">Dernière visite </th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
@@ -114,7 +114,7 @@
                                             <i class="bi bi-pencil-fill pe-0"></i>
                                         </a>
                                         <button type="button"
-                                          wire:click='deletedId({{ $client->id }}, "{{ $client->type === 'particulier' ? $client->full_name : $client->company_name }}")'
+                                            wire:click='deletedId({{ $client->id }}, "{{ $client->type === 'particulier' ? $client->full_name : $client->company_name }}")'
                                             data-bs-toggle="modal" data-bs-target="#kt_modal_supprimer"
                                             class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
                                             title="Supprimer" data-bs-original-title="Supprimer">
@@ -157,4 +157,25 @@
         <!--end::Card body-->
     </div>
     @include('pages.Clients.modals')
+    @include('pages.Clients.modal-filter')
+    <script>
+        $(document).ready(function() {
+            $('.sel').select2({
+                dropdownParent: $('#kt_modal_filter')
+            });
+
+            // Handle Type select2 change
+            $('#type_filter').on('change', function(e) {
+                @this.set('type', e.target.value , true);
+            });
+        });
+
+        window.addEventListener('empty', event => {
+            $('#type_filter').val("").trigger("change");
+            $(".flatpickr-input").flatpickr({
+                dateFormat: "d-m-Y",
+                locale: "fr",
+            });
+        });
+    </script>
 </div>

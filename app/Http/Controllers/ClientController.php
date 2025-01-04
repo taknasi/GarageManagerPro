@@ -126,7 +126,7 @@ class ClientController extends Controller
      */
     public function update(ClientRequest $request, $id)
     {
-        // try {
+        try {
             DB::beginTransaction();
 
             // Find the client
@@ -168,10 +168,10 @@ class ClientController extends Controller
             $this->successUpdateR();
 
             return redirect('/clients');
-        // } catch (\Exception $ex) {
-        //     DB::rollBack();
-        //     $this->catchingR($ex);
-        // }
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            $this->catchingR($ex);
+        }
     }
 
     /**

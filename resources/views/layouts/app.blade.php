@@ -18,6 +18,9 @@
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
+
+    <script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
+    
     @livewireStyles
     @stack('styles')
 </head>
@@ -70,7 +73,9 @@
     <!-- Global Javascript Bundle -->
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    
     @livewireScripts
+    
     @stack('scripts')
 </body>
 
