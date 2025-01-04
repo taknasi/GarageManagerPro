@@ -53,7 +53,7 @@
             <div class="d-flex flex-column flex-column-fluid">
                 <!--begin::Content-->
                 <div id="kt_app_content" class="app-content flex-column-fluid">
-                    <form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data" id="form">
                         @csrf
                         <div class="card-border-warning card pt-3 mb-5 ">
 
@@ -170,7 +170,7 @@
                                             </div>
 
                                             <!-- COMPANY_NAME (shown if type=societe) -->
-                                            <div class="col-sm-6  mb-5">
+                                            <div class="col-sm-6  mb-5" style="display: none;">
                                                 <label for="company_name" class="form-label required">Raison sociale
                                                     (Société)
                                                     :</label>
@@ -190,7 +190,7 @@
                                             </div>
 
                                             <!-- LEGAL_FORM (Société) -->
-                                            <div class="col-sm-6 mb-5">
+                                            <div class="col-sm-6 mb-5" style="display: none;">
                                                 <label for="legal_form" class="form-label">Forme juridique :</label>
                                                 <div class="input-group">
                                                     <div class="flex-fill">
@@ -296,7 +296,7 @@
                                 </div>
                                 <div class="row">
                                     <!-- CONTACT_PERSON (Société) -->
-                                    <div class="col-sm-6 col-xl-4 mb-5">
+                                    <div class="col-sm-6 col-xl-4 mb-5" style="display: none;">
                                         <label for="contact_person" class="form-label">Contact / Gérant :</label>
                                         <div class="input-group">
                                             <input type="text"
@@ -313,9 +313,8 @@
                                     </div>
 
                                     <!-- RC_NUMBER (Société) -->
-                                    <div class="col-sm-6 col-xl-4 mb-5">
-                                        <label for="rc_number" class="form-label">Numéro de registre de commerce (RC)
-                                            :</label>
+                                    <div class="col-sm-6 col-xl-4 mb-5" style="display: none;">
+                                        <label for="rc_number" class="form-label">RC :</label>
                                         <div class="input-group">
                                             <input type="text"
                                                 class="form-control @error('rc_number') is-invalid @enderror"
@@ -330,7 +329,7 @@
                                     </div>
 
                                     <!-- ICE (Société) -->
-                                    <div class="col-sm-6 col-xl-4 mb-5">
+                                    <div class="col-sm-6 col-xl-4 mb-5" style="display: none;">
                                         <label for="ice" class="form-label">ICE :</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control @error('ice') is-invalid @enderror"
@@ -390,11 +389,21 @@
 
                         <!-- Submit Buttons -->
                         <div class="d-flex">
-                            <button type="submit" name="store" value="Enregistrer" class="btn btn-primary me-2">
-                                <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer
+                            <button type="submit" name="store" id="submitBtn" value="Enregistrer" class="btn btn-primary me-2">
+                                <span class="indicator-label">
+                                    <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer
+                                </span>
+                                <span class="indicator-progress">
+                                    Veuillez patienter... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
                             </button>
-                            <button type="submit" name="store" value="save_and_new" class="btn btn-light-primary me-2">
-                                <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer et ajouter un autre
+                            <button type="submit" name="store" id="submitAndNewBtn" value="save_and_new" class="btn btn-light-primary me-2">
+                                <span class="indicator-label">
+                                    <i class="bi bi-check-lg fs-4 me-2"></i>Enregistrer et ajouter un autre
+                                </span>
+                                <span class="indicator-progress">
+                                    Veuillez patienter... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
                             </button>
                             <a href="{{ route('clients.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left fs-4 me-2"></i>Retour
@@ -488,6 +497,117 @@
         function setCivilite(value) {
             document.getElementById('civility').value = value;
         }
+
+        // Function to check if client exists
+        async function checkClientExists(data) {
+            try {
+                const formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key]);
+                });
+
+                const response = await fetch('{{ route('clients.check-exists') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error checking client:', error);
+                return { exists: false };
+            }
+        }
+
+        // Prevent double form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('form');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitAndNewBtn = document.getElementById('submitAndNewBtn');
+            const fullNameInput = document.getElementById('full_name');
+            const companyNameInput = document.getElementById('company_name');
+            const typeInput = document.getElementById('type');
+
+            async function handleSubmit(e, button) {
+                // Prevent the default form submission
+                e.preventDefault();
+
+                // Check if client exists based on type
+                const type = typeInput.value;
+                let checkData = { type };
+                
+                if (type === 'particulier' && fullNameInput.value) {
+                    checkData.full_name = fullNameInput.value;
+                } else if (type === 'societe' && companyNameInput.value) {
+                    checkData.company_name = companyNameInput.value;
+                }
+
+                try {
+                    const { exists } = await checkClientExists(checkData);
+
+                    if (exists) {
+                        // Show SweetAlert2 confirmation
+                        const result = await Swal.fire({
+                            text: 'Ce client existe déjà. Voulez-vous l\'ajouter ?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Oui, ajouter',
+                            cancelButtonText: 'Non, annuler',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-primary',
+                                cancelButton: 'btn btn-light'
+                            }
+                        });
+
+                        if (!result.isConfirmed) {
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error during client check:', error);
+                }
+                
+                // Create a hidden input for the store value
+                const storeInput = document.createElement('input');
+                storeInput.type = 'hidden';
+                storeInput.name = 'store';
+                storeInput.value = button.value;
+                form.appendChild(storeInput);
+
+                // Disable both buttons
+                submitBtn.disabled = true;
+                submitAndNewBtn.disabled = true;
+                
+                // Show loading state for clicked button
+                button.querySelector('.indicator-label').style.display = 'none';
+                button.querySelector('.indicator-progress').style.display = 'block';
+                
+                // Submit the form
+                form.submit();
+                
+                // Enable buttons after 5 seconds (in case of error)
+                setTimeout(function() {
+                    submitBtn.disabled = false;
+                    submitAndNewBtn.disabled = false;
+                    button.querySelector('.indicator-label').style.display = 'block';
+                    button.querySelector('.indicator-progress').style.display = 'none';
+                }, 5000);
+            }
+
+            form.addEventListener('submit', function(e) {
+                const clickedButton = document.activeElement;
+                if (clickedButton === submitBtn || clickedButton === submitAndNewBtn) {
+                    handleSubmit(e, clickedButton);
+                }
+            });
+        });
 
         // Run on page load
         document.addEventListener('DOMContentLoaded', function() {

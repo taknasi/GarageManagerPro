@@ -184,4 +184,24 @@ class ClientController extends Controller
     {
         //
     }
+
+    public function checkExists(Request $request)
+    {
+        try {
+            $query = Client::query();
+
+            if ($request->type === 'particulier' && $request->has('full_name')) {
+                $query->where('full_name', $request->full_name)
+                      ->where('type', 'particulier');
+            } elseif ($request->type === 'societe' && $request->has('company_name')) {
+                $query->where('company_name', $request->company_name)
+                      ->where('type', 'societe');
+            }
+
+            $exists = $query->exists();
+            return response()->json(['exists' => $exists]);
+        } catch (\Exception $e) {
+            return response()->json(['exists' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
 }
