@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Client;
+use App\Models\User;
 use App\Traits\AlertTrait;
 use Carbon\Carbon;
 use Exception;
@@ -30,7 +31,7 @@ class Clients extends Component
     public $type;
     public $phone;
     public $email;
-    public $civility;
+    public $user_id;
     public $full_name;
     public $company_name;
     public $legal_form;
@@ -97,8 +98,8 @@ class Clients extends Component
         if ($this->email) {
             $query->where('email', 'like', '%' . $this->email . '%');
         }
-        if ($this->civility) {
-            $query->where('civility', 'like', '%' . $this->civility . '%');
+        if ($this->user_id) {
+            $query->where('user_id', $this->user_id);
         }
         if ($this->full_name) {
             $query->where('full_name', 'like', '%' . $this->full_name . '%');
@@ -167,7 +168,7 @@ class Clients extends Component
         $this->type = null;
         $this->phone = null;
         $this->email = null;
-        $this->civility = null;
+        $this->user_id = null;
         $this->full_name = null;
         $this->company_name = null;
         $this->legal_form = null;

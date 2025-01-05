@@ -179,9 +179,9 @@
                 @this.set('legal_form', e.target.value , true);
             });
 
-            // Handle Civility select2 change
-            $('#civility_filter').on('change', function(e) {
-                @this.set('civility', e.target.value , true);
+            // Handle User select2 change
+            $('#user_filter').on('change', function(e) {
+                @this.set('user_id', e.target.value , true);
             });
         });
 
@@ -189,7 +189,7 @@
             $('#type_filter').val("").trigger("change");
             $('#city').val("").trigger("change");
             $('#legal_form_filter').val("").trigger("change");
-            $('#civility_filter').val("").trigger("change");
+            $('#user_filter').val("").trigger("change");
 
             $(".flatpickr-input").flatpickr({
                 dateFormat: "d-m-Y",

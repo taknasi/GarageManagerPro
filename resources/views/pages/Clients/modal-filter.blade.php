@@ -58,13 +58,14 @@
 
                         <!-- Civility -->
                         <div class="col-sm-4 mb-5">
-                            <label class="form-label">Civilité :</label>
+                            <label class="form-label">Utilisateur :</label>
                             <div wire:ignore>
-                                <select class="form-select sel" id="civility_filter" data-control="select2"
-                                    data-hide-search="true">
+                                <select class="form-select sel" id="user_filter" data-control="select2"
+                                    data-hide-search="false" wire:model.defer="user_id">
                                     <option value="">Tous</option>
-                                    <option value="Monsieur">Monsieur</option>
-                                    <option value="Madame">Madame</option>
+                                    @foreach(\App\Models\User::all() as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
