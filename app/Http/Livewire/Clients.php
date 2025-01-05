@@ -107,7 +107,7 @@ class Clients extends Component
             $query->where('company_name', 'like', '%' . $this->company_name . '%');
         }
         if ($this->legal_form) {
-            $query->where('legal_form', 'like', '%' . $this->legal_form . '%');
+            $query->where('legal_form', 'like',  $this->legal_form );
         }
         if ($this->contact_person) {
             $query->where('contact_person', 'like', '%' . $this->contact_person . '%');

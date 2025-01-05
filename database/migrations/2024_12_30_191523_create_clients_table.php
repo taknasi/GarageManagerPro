@@ -24,8 +24,6 @@ class CreateClientsTable extends Migration
 
             // Civilité (si c'est un particulier, ex: M., Mme., etc.)
             $table->string('civility')->nullable();
-
-            // Nom complet (au lieu de séparer nom et prénom)
             $table->string('full_name')->nullable();
 
             // Champs spécifiques pour Société
@@ -33,7 +31,6 @@ class CreateClientsTable extends Migration
             $table->string('legal_form')->nullable();     // Forme juridique (SARL, SAS, SA, etc.)
             $table->string('contact_person')->nullable(); // Gérant/dirigeant
 
-            // Nouveaux champs pour informations légales
             // $table->string('cin')->nullable();       // Carte d'Identité Nationale
             $table->string('rc_number')->nullable(); // Numéro de registre de commerce (RC)
             $table->string('ice')->nullable();       // ICE
@@ -41,6 +38,9 @@ class CreateClientsTable extends Migration
             // Adresse (commune à tous types de clients)
             $table->string('address')->nullable();
             $table->string('city')->nullable();
+
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

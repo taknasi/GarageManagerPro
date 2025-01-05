@@ -168,10 +168,29 @@
             $('#type_filter').on('change', function(e) {
                 @this.set('type', e.target.value , true);
             });
+
+            // Handle City select2 change
+            $('#city').on('change', function(e) {
+                @this.set('city', e.target.value , true);
+            });
+
+            // Handle Legal Form select2 change
+            $('#legal_form_filter').on('change', function(e) {
+                @this.set('legal_form', e.target.value , true);
+            });
+
+            // Handle Civility select2 change
+            $('#civility_filter').on('change', function(e) {
+                @this.set('civility', e.target.value , true);
+            });
         });
 
         window.addEventListener('empty', event => {
             $('#type_filter').val("").trigger("change");
+            $('#city').val("").trigger("change");
+            $('#legal_form_filter').val("").trigger("change");
+            $('#civility_filter').val("").trigger("change");
+
             $(".flatpickr-input").flatpickr({
                 dateFormat: "d-m-Y",
                 locale: "fr",

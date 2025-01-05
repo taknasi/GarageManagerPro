@@ -42,6 +42,15 @@
                 Modifier Client
             </h1>
         </div>
+
+        <div class="d-flex align-self-center flex-center flex-shrink-0">
+            <label for="exampleFormControlInput1" class="form-label fs-5 fw-bolder text-gray-600 d-block mt-1 ">Nom
+                d'utilisateur :
+            </label>
+
+            <span class=" badge py-3 px-4 fs-6 badge-light ms-2">{{ $client->user->name }}
+            </span>
+        </div>
     </div>
     <!--end::Toolbar wrapper=-->
 @endsection
@@ -53,7 +62,8 @@
             <div class="d-flex flex-column flex-column-fluid">
                 <!--begin::Content-->
                 <div id="kt_app_content" class="app-content flex-column-fluid">
-                    <form method="POST" action="{{ route('clients.update', $client->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('clients.update', $client->id) }}" enctype="multipart/form-data"
+                        id="form">
                         @csrf
                         @method('PUT')
                         <div class="card-border-warning card pt-3 mb-5 ">
@@ -163,7 +173,8 @@
                                                     </span>
                                                 </div>
                                                 @error('full_name')
-                                                    <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        {{ $message }}</div>
                                                 @enderror
                                             </div>
 
@@ -183,7 +194,8 @@
                                                     </span>
                                                 </div>
                                                 @error('company_name')
-                                                    <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        {{ $message }}</div>
                                                 @enderror
                                             </div>
 
@@ -242,7 +254,8 @@
                                                     </span>
                                                 </div>
                                                 @error('legal_form')
-                                                    <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        {{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -263,7 +276,8 @@
                                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                                                 </div>
                                                 @error('phone')
-                                                    <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        {{ $message }}</div>
                                                 @enderror
                                             </div>
 
@@ -308,7 +322,8 @@
                                             </span>
                                         </div>
                                         @error('contact_person')
-                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
 
@@ -325,7 +340,8 @@
                                             </span>
                                         </div>
                                         @error('rc_number')
-                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
 
@@ -340,7 +356,8 @@
                                             </span>
                                         </div>
                                         @error('ice')
-                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
 
@@ -351,7 +368,8 @@
                                         <label for="address" class="form-label">Adresse :</label>
                                         <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="1">{{ $client->address }}</textarea>
                                         @error('address')
-                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
 
@@ -377,7 +395,8 @@
                                                 <i class="bi bi-geo-alt fs-2"></i>
                                             </span>
                                             @error('city')
-                                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
+                                                </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -388,7 +407,8 @@
                                         <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" rows="1"
                                             placeholder="Observations, commentaires...">{{ $client->notes }}</textarea>
                                         @error('notes')
-                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                            <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -398,8 +418,15 @@
 
                         <!-- Submit Buttons -->
                         <div class="d-flex">
-                            <button type="submit" name="action" value="save" class="btn btn-primary me-2">
-                                <i class="bi bi-check-lg fs-4 me-2"></i>Mettre à jour
+                            <button type="submit" name="action" id="submitBtn" value="save"
+                                class="btn btn-primary me-2">
+                                <span class="indicator-label">
+                                    <i class="bi bi-check-lg fs-4 me-2"></i>Mettre à jour
+                                </span>
+                                <span class="indicator-progress">
+                                    Veuillez patienter... <span
+                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
                             </button>
                             <a href="{{ route('clients.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left fs-4 me-2"></i>Retour
@@ -416,6 +443,122 @@
 @push('scripts')
     <script src="{{ asset('assets/plugins/global/select2-fr.min.js') }}"></script>
     <script>
+        // Function to check if client exists
+        async function checkClientExists(data) {
+            try {
+                const formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key]);
+                });
+
+                const response = await fetch('{{ route('clients.check-exists') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error checking client:', error);
+                return {
+                    exists: false
+                };
+            }
+        }
+
+        // Prevent double form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('form');
+            const submitBtn = document.getElementById('submitBtn');
+            const fullNameInput = document.getElementById('full_name');
+            const companyNameInput = document.getElementById('company_name');
+            const typeInput = document.getElementById('type');
+            const currentClientId = '{{ $client->id }}';
+
+            async function handleSubmit(e, button) {
+                // Prevent the default form submission
+                e.preventDefault();
+
+                // Check if client exists based on type
+                const type = typeInput.value;
+                let checkData = {
+                    type,
+                    exclude_id: currentClientId // Exclude current client from check
+                };
+
+                if (type === 'particulier' && fullNameInput.value) {
+                    checkData.full_name = fullNameInput.value;
+                } else if (type === 'societe' && companyNameInput.value) {
+                    checkData.company_name = companyNameInput.value;
+                }
+
+                try {
+                    const {
+                        exists
+                    } = await checkClientExists(checkData);
+
+                    if (exists) {
+                        // Show SweetAlert2 confirmation
+                        const result = await Swal.fire({
+                            text: 'Ce client existe déjà. Voulez-vous l\'ajouter ?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Oui, ajouter',
+                            cancelButtonText: 'Non, annuler',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-primary',
+                                cancelButton: 'btn btn-light'
+                            }
+                        });
+
+                        if (!result.isConfirmed) {
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error during client check:', error);
+                }
+
+                // Create a hidden input for the action value
+                const actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action';
+                actionInput.value = button.value;
+                form.appendChild(actionInput);
+
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                // Show loading state
+                submitBtn.querySelector('.indicator-label').style.display = 'none';
+                submitBtn.querySelector('.indicator-progress').style.display = 'block';
+
+                // Submit the form
+                form.submit();
+
+                // Enable button after 5 seconds (in case of error)
+                setTimeout(function() {
+                    submitBtn.disabled = false;
+                    submitBtn.querySelector('.indicator-label').style.display = 'block';
+                    submitBtn.querySelector('.indicator-progress').style.display = 'none';
+                }, 5000);
+            }
+
+            form.addEventListener('submit', function(e) {
+                const clickedButton = document.activeElement;
+                if (clickedButton === submitBtn) {
+                    handleSubmit(e, clickedButton);
+                }
+            });
+        });
+
         // Function to toggle fields visibility based on client type
         function toggleClientTypeFields(type) {
             const societyFields = [

@@ -59,15 +59,13 @@
                         <!-- Civility -->
                         <div class="col-sm-4 mb-5">
                             <label class="form-label">Civilité :</label>
-                            <div class="input-group">
-                                <div class="flex-fill" wire:ignore>
-                                    <select class="form-select sel" wire:model.defer='civility' id="civility_filter"
-                                        data-control="select2" data-placeholder="Sélectionner la civilité">
-                                        <option></option>
-                                        <option value="Monsieur">Monsieur</option>
-                                        <option value="Madame">Madame</option>
-                                    </select>
-                                </div>
+                            <div wire:ignore>
+                                <select class="form-select sel" id="civility_filter" data-control="select2"
+                                    data-hide-search="true">
+                                    <option value="">Tous</option>
+                                    <option value="Monsieur">Monsieur</option>
+                                    <option value="Madame">Madame</option>
+                                </select>
                             </div>
                         </div>
 
@@ -87,20 +85,22 @@
                         <!-- Legal Form -->
                         <div class="col-sm-4 mb-5">
                             <label class="form-label">Forme Juridique :</label>
-                            <div class="input-group">
-                                <div class="flex-fill">
-                                    <select class="form-select sel" wire:model.defer='legal_form' id="legal_form_filter"
-                                        data-control="select2" data-placeholder="Sélectionner la forme juridique"
-                                        hide-search="false">
-                                        <option></option>
-                                        <option value="SA">SA - Société Anonyme</option>
-                                        <option value="SARL">SARL - Société à Responsabilité Limitée</option>
-                                        <option value="SARL AU">SARL AU - SARL à Associé Unique</option>
-                                        <option value="SNC">SNC - Société en Nom Collectif</option>
-                                        <option value="SCS">SCS - Société en Commandite Simple</option>
-                                        <option value="SCA">SCA - Société en Commandite par Actions</option>
-                                    </select>
-                                </div>
+                            <div wire:ignore>
+                                <select class="form-select sel" id="legal_form_filter" data-control="select2"
+                                    data-hide-search="true">
+                                    <option value="">Tous</option>
+                                    <option value="SA">Société Anonyme</option>
+                                    <option value="SARL">Société à Responsabilité Limitée</option>
+                                    <option value="SARL AU">SARL à Associé Unique</option>
+                                    <option value="SNC">Société en Nom Collectif</option>
+                                    <option value="SCS">Société en Commandite Simple</option>
+                                    <option value="SCA">Société en Commandite par Actions</option>
+                                    <option value="GIE">Groupement d'Intérêt Économique</option>
+                                    <option value="SP">Société en Participation</option>
+                                    <option value="SUCCURSALE">Succursale</option>
+                                    <option value="AUTO ENTREPRENEUR">Auto Entrepreneur</option>
+
+                                </select>
                             </div>
                         </div>
 
@@ -114,7 +114,8 @@
                         <!-- RC Number -->
                         <div class="col-sm-4 mb-5">
                             <label class="form-label">N° RC :</label>
-                            <input class="form-control form-control-lg" type="text" wire:model.defer='rc_number' />
+                            <input class="form-control form-control-lg" type="text"
+                                wire:model.defer='rc_number' />
                         </div>
 
                         <!-- ICE -->
@@ -132,7 +133,63 @@
                         <!-- City -->
                         <div class="col-sm-4 mb-5">
                             <label class="form-label">Ville :</label>
-                            <input class="form-control form-control-lg" type="text" wire:model.defer='city' />
+                            <div wire:ignore>
+                                <select class="form-select sel" id="city" data-control="select2"
+                                    data-hide-search="false">
+                                    <option value="">Tous</option>
+                                    <option value="Agadir">Agadir</option>
+                                    <option value="Al Hoceima">Al Hoceima</option>
+                                    <option value="Assilah">Assilah</option>
+                                    <option value="Azemmour">Azemmour</option>
+                                    <option value="Azrou">Azrou</option>
+                                    <option value="Beni Mellal">Beni Mellal</option>
+                                    <option value="Berkane">Berkane</option>
+                                    <option value="Berrechid">Berrechid</option>
+                                    <option value="Casablanca">Casablanca</option>
+                                    <option value="Chefchaouen">Chefchaouen</option>
+                                    <option value="Dakhla">Dakhla</option>
+                                    <option value="El Jadida">El Jadida</option>
+                                    <option value="Errachidia">Errachidia</option>
+                                    <option value="Essaouira">Essaouira</option>
+                                    <option value="Fès">Fès</option>
+                                    <option value="Fnideq">Fnideq</option>
+                                    <option value="Guelmim">Guelmim</option>
+                                    <option value="Ifrane">Ifrane</option>
+                                    <option value="Kénitra">Kénitra</option>
+                                    <option value="Khemisset">Khemisset</option>
+                                    <option value="Khouribga">Khouribga</option>
+                                    <option value="Ksar El Kebir">Ksar El Kebir</option>
+                                    <option value="Laâyoune">Laâyoune</option>
+                                    <option value="Larache">Larache</option>
+                                    <option value="Marrakech">Marrakech</option>
+                                    <option value="Martil">Martil</option>
+                                    <option value="Meknès">Meknès</option>
+                                    <option value="Mohammedia">Mohammedia</option>
+                                    <option value="Nador">Nador</option>
+                                    <option value="Ouarzazate">Ouarzazate</option>
+                                    <option value="Oued Zem">Oued Zem</option>
+                                    <option value="Oujda">Oujda</option>
+                                    <option value="Rabat">Rabat</option>
+                                    <option value="Safi">Safi</option>
+                                    <option value="Salé">Salé</option>
+                                    <option value="Sefrou">Sefrou</option>
+                                    <option value="Settat">Settat</option>
+                                    <option value="Sidi Bennour">Sidi Bennour</option>
+                                    <option value="Sidi Ifni">Sidi Ifni</option>
+                                    <option value="Sidi Kacem">Sidi Kacem</option>
+                                    <option value="Sidi Slimane">Sidi Slimane</option>
+                                    <option value="Skhirat">Skhirat</option>
+                                    <option value="Tan-Tan">Tan-Tan</option>
+                                    <option value="Tanger">Tanger</option>
+                                    <option value="Taroudant">Taroudant</option>
+                                    <option value="Taza">Taza</option>
+                                    <option value="Témara">Témara</option>
+                                    <option value="Tétouan">Tétouan</option>
+                                    <option value="Tiznit">Tiznit</option>
+                                    <option value="Youssoufia">Youssoufia</option>
+                                    <option value="Zagora">Zagora</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Date Range -->

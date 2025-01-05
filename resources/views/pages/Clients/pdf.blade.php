@@ -12,7 +12,6 @@
                         <th>ID</th>
                         <th>Type</th>
                         <th>Nom Complet/Société</th>
-                        <th>Civilité</th>
                         <th>Téléphone</th>
                         <th>Email</th>
                         <th>Forme Juridique</th>
@@ -22,6 +21,7 @@
                         <th>Adresse</th>
                         <th>Ville</th>
                         <th>Notes</th>
+                        <th>Utilisateur</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,8 +30,7 @@
                             <tr>
                                 <td>{{ $client->id_client }}</td>
                                 <td>{{ ucfirst($client->type) }}</td>
-                                <td class="font-weight-bold">{{ $client->type === 'particulier' ? $client->full_name : $client->company_name }}</td>
-                                <td>{{ $client->civility }}</td>
+                                <td class="font-weight-bold">{{ $client->type === 'particulier' ? $client->civility . ' ' . $client->full_name : $client->company_name }}</td>
                                 <td>{{ $client->phone }}</td>
                                 <td>{{ $client->email }}</td>
                                 <td>{{ $client->legal_form }}</td>
@@ -41,6 +40,7 @@
                                 <td>{{ $client->address }}</td>
                                 <td>{{ $client->city }}</td>
                                 <td>{{ $client->notes }}</td>
+                                <td>{{ $client->user->name }}</td>
                             </tr>
                         @empty
                             <tr>

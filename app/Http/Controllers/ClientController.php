@@ -8,6 +8,7 @@ use App\Traits\AlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -71,6 +72,8 @@ class ClientController extends Controller
                 $client->rc_number = $request->rc_number;
                 $client->ice = $request->ice;
             }
+
+            $client->user_id = Auth::user()->id;
 
             $client->save();
 
@@ -192,10 +195,15 @@ class ClientController extends Controller
 
             if ($request->type === 'particulier' && $request->has('full_name')) {
                 $query->where('full_name', $request->full_name)
-                      ->where('type', 'particulier');
+                    ->where('type', 'particulier');
             } elseif ($request->type === 'societe' && $request->has('company_name')) {
                 $query->where('company_name', $request->company_name)
-                      ->where('type', 'societe');
+                    ->where('type', 'societe');
+            }
+
+            // Exclude current client if editing
+            if ($request->has('exclude_id')) {
+                $query->where('id', '!=', $request->exclude_id);
             }
 
             $exists = $query->exists();
