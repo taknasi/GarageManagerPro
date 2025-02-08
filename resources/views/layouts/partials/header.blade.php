@@ -5,7 +5,7 @@
         <!-- Mobile Toggle -->
         <div class="d-flex align-items-center d-lg-none ms-n2 me-2">
             <div class="btn btn-icon btn-active-color-primary w-35px h-35px" id="kt_app_header_menu_toggle">
-                <i class="ki-outline ki-abstract-14 fs-2"></i>
+                <i class="bi bi-list fs-1"></i>
             </div>
         </div>
 
@@ -16,8 +16,8 @@
             </a> --}}
             <a href="">
                 {{-- {{ route('dashboard') }} --}}
-                <img alt="Logo" src="assets/media/logo-small.svg" class="h-25px d-sm-none">
-                <img alt="Logo" src="assets/media/logo.png" class="h-25px d-none d-sm-block">
+                <img alt="Logo" src="{{asset('assets/media/logo.svg')}}" class="h-25px d-sm-none">
+                <img alt="Logo" src="{{asset('assets/media/logo.png')}}" class="h-25px d-none d-sm-block">
             </a>
         </div>
 

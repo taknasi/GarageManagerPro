@@ -30,6 +30,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/clients/check-exists', 'ClientController@checkExists')->name('clients.check-exists');
     Route::view('/liste.clients', 'pages.Clients.pdf')->name('liste.clients');
     /******************************** End Clients ******************************************/
+
+    /******************************** Véhicule  **********************************************/
+    Route::resource('vehicules', 'VehiculeController');
+    // Route::post('/clients/check-exists', 'ClientController@checkExists')->name('clients.check-exists');
+    // Route::view('/liste.clients', 'pages.Clients.pdf')->name('liste.clients');
+    /******************************** End Véhicule  ******************************************/
 });
 /******************************** Login and disabled register ****************************/
 Auth::routes(['register' => false]);
