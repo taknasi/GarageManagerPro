@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Client;
 use App\Models\User;
+use App\Models\Ville;
 use App\Traits\AlertTrait;
 use Carbon\Carbon;
 use Exception;
@@ -43,6 +44,12 @@ class Clients extends Component
     public $dateDe;
     public $dateA;
     public $activateFilter = false;
+    public $villes;
+
+    public function mount()
+    {
+        $this->villes = Ville::orderby("ville", "asc")->select('id', 'ville')->get();
+    }
 
     public function render()
     {
@@ -69,7 +76,7 @@ class Clients extends Component
 
     public function filtrer($type)
     {
-        $clients = Client::query()
+        $clients = Client::query()->with(['ville'])
             ->search($this->search)
             ->orderBy($this->sortBy, $this->sortDirection);
 
@@ -123,7 +130,7 @@ class Clients extends Component
             $query->where('address', 'like', '%' . $this->address . '%');
         }
         if ($this->city) {
-            $query->where('city', 'like', '%' . $this->city . '%');
+            $query->where('ville_id', 'like', '%' . $this->city . '%');
         }
         if ($this->dateDe && $this->dateA) {
             $query->whereBetween('created_at', [

@@ -40,7 +40,7 @@ class ClientRequest extends FormRequest
         $rules += [
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:100',
+            'ville_id' => 'required|exists:villes,id',
             'postal_code' => 'nullable|string|max:10',
             'notes' => 'nullable|string',
         ];

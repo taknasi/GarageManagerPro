@@ -4,7 +4,7 @@
         <div class="header text-center mb-4">
             <h1 class="pdf-title">Liste des Clients</h1>
         </div>
-        
+
         <div class="table-responsive">
             <table class="table table-bordered table-striped pdf-table">
                 <thead class="thead-light" >
@@ -38,7 +38,7 @@
                                 <td>{{ $client->rc_number }}</td>
                                 <td>{{ $client->ice }}</td>
                                 <td>{{ $client->address }}</td>
-                                <td>{{ $client->city }}</td>
+                                <td>{{ $client->ville->ville }}</td>
                                 <td>{{ $client->notes }}</td>
                                 <td>{{ $client->user->name }}</td>
                             </tr>

@@ -13,6 +13,11 @@ class Client extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function ville()
+    {
+        return $this->belongsTo(Ville::class);
+    }
+
     public function scopeSearch($query, $search)
     {
         return $query

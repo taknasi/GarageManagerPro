@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('clients', 'ClientController');
     Route::post('/clients/check-exists', 'ClientController@checkExists')->name('clients.check-exists');
     Route::view('/liste.clients', 'pages.Clients.pdf')->name('liste.clients');
+    Route::get('/getVille', 'ClientController@getVilles')->name('get.ville');
     /******************************** End Clients ******************************************/
 
     /******************************** Véhicule  **********************************************/
