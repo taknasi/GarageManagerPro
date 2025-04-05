@@ -6,11 +6,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 trait AlertTrait {
-    
+
     use LivewireAlert;
 
     // ---------------- alerts with livewire-----------------------------
-    
+
     public function successAdd(){
         $this->alert('success', 'L\'enregistrement a été ajouté avec succès !');
     }
@@ -20,7 +20,7 @@ trait AlertTrait {
     }
 
     public function successDelete(){
-        $this->alert('success', 'L\'enregistrement a été supprimer avec succès !');
+        $this->alert('success', 'L\'enregistrement a été supprimer avec succè !');
     }
 
     public function successRestore(){
@@ -84,7 +84,7 @@ trait AlertTrait {
     public function catchingR($ex){
         alert::error('erreur',$ex->getMessage());
     }
-    
+
 }
 
 

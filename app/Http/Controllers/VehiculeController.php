@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Livewire\Vehicules;
 use App\Http\Requests\VehiculeRequest;
+use App\Models\Photo;
 use App\Models\Vehicule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Traits\AlertTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
 
 class VehiculeController extends Controller
 {
@@ -37,13 +39,14 @@ class VehiculeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\VehiculeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VehiculeRequest $request)
     {
         try {
             DB::beginTransaction();
+
             $vehicule = new Vehicule();
             $vehicule->immatriculation = $request->immatriculation;
             $vehicule->n_chassis = $request->n_chassis;
@@ -53,9 +56,23 @@ class VehiculeController extends Controller
             $vehicule->type_carburant = $request->type_carburant;
             $vehicule->categorie = $request->categorie;
             $vehicule->couleur = $request->couleur;
+            $vehicule->kilometrage_actuel = $request->kilometrage_actuel;
+            $vehicule->puissance_fiscale = $request->puissance_fiscale;
+            $vehicule->compagnie_assurance = $request->compagnie_assurance;
+            $vehicule->numero_de_police = $request->numero_de_police;
             $vehicule->user_id = Auth::user()->id;
             $vehicule->save();
-
+            if ($request->hasFile('photos')) {
+                foreach ($request->file('photos') as $photo) {
+                    $extension = $photo->getClientOriginalExtension();
+                    $filename = time() . '_' . pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $extension;
+                    $photo->move(public_path('images'), $filename);
+                    Photo::create([
+                        'vehicule_id' => $vehicule->id,
+                        'photo' => $filename,
+                    ]);
+                }
+            }
             DB::commit();
 
             $this->successAddR();
@@ -65,9 +82,16 @@ class VehiculeController extends Controller
             } else {
                 return redirect()->route('vehicules.create');
             }
+        } catch (ValidationException $ex) {
+            DB::rollBack();
+            $this->catchingR($ex);
+            return redirect()->route('vehicules.create')
+                ->withErrors($ex->validator->errors())
+                ->withInput();
         } catch (\Exception $ex) {
             DB::rollBack();
             $this->catchingR($ex);
+            return redirect()->route('vehicules.create')->with('error', 'Une erreur inattendue s\'est produite.');
         }
     }
 
@@ -117,7 +141,10 @@ class VehiculeController extends Controller
             $vehicule->type_carburant = $request->type_carburant;
             $vehicule->categorie = $request->categorie;
             $vehicule->couleur = $request->couleur;
-
+            $vehicule->kilometrage_actuel = $request->kilometrage_actuel;
+            $vehicule->puissance_fiscale = $request->puissance_fiscale;
+            $vehicule->compagnie_assurance = $request->compagnie_assurance;
+            $vehicule->numero_de_police = $request->numero_de_police;
 
             $vehicule->save();
 

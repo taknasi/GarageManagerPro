@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class Vehicules extends Component
 {
     use WithPagination, AlertTrait;
+    use WithFileUploads;
 
     // Listing
     public $search;
@@ -38,6 +40,14 @@ class Vehicules extends Component
     public $type_carburant;
     public $categorie;
     public $couleur;
+    public $kilometrage_actuel;
+    public $puissance_fiscale;
+    public $compagnie_assurance;
+    public $numero_de_police;
+
+    // upload image
+
+    public $photos = [];
 
     public $dateDe;
     public $dateA;
@@ -122,6 +132,24 @@ class Vehicules extends Component
                 Carbon::parse($this->dateA)->format('Y-m-d 23:59:59')
             ]);
         }
+
+        if ($this->kilometrage_actuel) {
+            $query->where('kilometrage_actuel', 'like', '%' . $this->kilometrage_actuel . '%');
+        }
+
+        if ($this->puissance_fiscale) {
+            $query->where('puissance_fiscale', 'like', '%' . $this->puissance_fiscale . '%');
+        }
+
+
+        if ($this->compagnie_assurance) {
+            $query->where('compagnie_assurance', 'like', '%' . $this->compagnie_assurance . '%');
+        }
+
+        if ($this->numero_de_police) {
+            $query->where('numero_de_police', 'like', '%' . $this->numero_de_police . '%');
+        }
+
     }
 
     public function deletedId($id_vehicule, $immatriculation)
@@ -166,6 +194,10 @@ class Vehicules extends Component
         $this->type_carburant = null;
         $this->categorie = null;
         $this->couleur = null;
+        $this->kilometrage_actuel=null;
+        $this->puissance_fiscale=null;
+        $this->compagnie_assurance=null;
+        $this->numero_de_police=null;
 
 
         $this->dateDe = null;

@@ -15,14 +15,19 @@ class CreateVehiculesTable extends Migration
     {
         Schema::create('vehicules', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('immatriculation')->nullable();
-            $table->float('n_chassis')->nullable();
+            $table->string('immatriculation')->unique();
+            $table->string('n_chassis')->nullable();
             $table->string('marque')->nullable();
             $table->string('modele')->nullable();
             $table->integer('annee_fabrication')->nullable();
             $table->string('type_carburant')->nullable();
             $table->string('categorie')->nullable();
             $table->string('couleur')->nullable();
+            $table->string('kilometrage_actuel')->nullable();
+            $table->string('puissance_fiscale')->nullable();
+            $table->string('compagnie_assurance')->nullable();
+            $table->string('numero_de_police')->nullable();
+            $table->string('image')->nullable();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
@@ -39,4 +44,3 @@ class CreateVehiculesTable extends Migration
         Schema::dropIfExists('vehicules');
     }
 }
-

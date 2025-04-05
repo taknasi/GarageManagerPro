@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /******************************** Véhicule  **********************************************/
     Route::resource('vehicules', 'VehiculeController');
-    // Route::post('/vehicules/check-exists', 'ClientController@checkExists')->name('vehicules.check-exists');
+    Route::post('/vehicules/check-exists', 'ClientController@checkExists')->name('vehicules.check-exists');
     Route::view('/liste.vehicules', 'pages.vehicules.pdf')->name('liste.vehicules');
     /******************************** End Véhicule  ******************************************/
 });

@@ -120,6 +120,27 @@
                                     wire:model.defer='dateA' id="dateA" readonly="readonly" />
                             </div>
                         </div>
+
+                        <div class="col-sm-4 mb-5">
+                            <label class="form-label">Kilométrage actuel :</label>
+                            <input class="form-control form-control-lg" type="text" wire:model.defer='kilometrage_actuel' />
+                        </div>
+
+                        <div class="col-sm-4 mb-5">
+                            <label class="form-label">Puissance fiscale :</label>
+                            <input class="form-control form-control-lg" type="text" wire:model.defer='puissance_fiscale' />
+                        </div>
+
+                        <div class="col-sm-4 mb-5">
+                            <label class="form-label">Compagnie d'assurance :</label>
+                            <input class="form-control form-control-lg" type="text" wire:model.defer='compagnie_assurance' />
+                        </div>
+
+                        <div class="col-sm-4 mb-5">
+                            <label class="form-label">Numéro de police :</label>
+                            <input class="form-control form-control-lg" type="text" wire:model.defer='numero_de_police' />
+                        </div>
+
                     </div>
                 </div>
             </div>

@@ -10,12 +10,12 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-search fs-2"></i></span>
                         <input type="text" class="form-control" placeholder="Recherche .." data-bs-toggle="tooltip"
-                            data-bs-original-title="Recherche par :Marque , Modele " aria-label="Recherche par : "
-                            wire:model.debounce.300ms="search" />
+                            data-bs-original-title="Recherche par :Marque , Modele , Immatriculation "
+                            aria-label="Recherche par : " wire:model.debounce.300ms="search" />
                     </div>
                 </div>
                 <span class="input-group-text col-sm-5 text-gray-500">
-                    <i class="bi bi-people-fill text-primary fs-2 me-4"></i>
+                    <i class="bi bi-car-front text-primary fs-2 me-4"></i>
                     <span class="text-gray-700 me-2 fw-bolder">{{ $vehicules->total() ?? 0 }}</span> Vehicules
                 </span>
                 <!--end::Search-->
@@ -75,6 +75,11 @@
                             <th scope="col">Type de carburant</th>
                             <th scope="col">Categorie </th>
                             <th scope="col">Couleur</th>
+                            <th scope="col">Kilométrage actuel</th>
+                            <th scope="col">Puissance fiscale</th>
+                            <th scope="col">Compagnie d’assurance</th>
+                            <th scope="col">Numéro de police</th>
+                            <th scope="col">photo</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                         <!--end::Table row-->
@@ -83,43 +88,66 @@
                     <!--begin::Table body-->
                     <tbody class="fw-bold text-gray-700">
                         @forelse ($vehicules as $vehicule)
-                            <tr>
-                                <td class="text-gray-600">{{ $vehicule->immatriculation }}</td>
-                                <td class="text-gray-600">{{ $vehicule->n_chassis }}</td>
-                                <td class="text-gray-600">{{ $vehicule->marque }}</td>
-                                <td class="text-gray-600">{{ $vehicule->modele }}</td>
-                                <td class="text-gray-600">{{ $vehicule->annee_fabrication }}</td>
-                                <td class="text-gray-600">{{ $vehicule->type_carburant }}</td>
-                                <td class="text-gray-600">{{ $vehicule->categorie }}</td>
-                                <td class="text-gray-600">{{ $vehicule->couleur }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-end flex-shrink-0">
-                                        <a href="{{ route('vehicules.show', $vehicule->id) }}"
-                                            class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
-                                            data-bs-toggle="tooltip" data-bs-original-title="Voir détails"
-                                            title="Voir détails">
-                                            <i class="bi bi-eye-fill pe-0"></i>
-                                        </a>
-                                        <a href="{{ route('vehicules.edit', $vehicule->id) }}"
-                                            class="btn btn-icon btn-bg-light btn-active-color-info btn-sm me-1"
-                                            data-bs-toggle="tooltip" data-bs-original-title="Modifier" title="Modifier">
-                                            <i class="bi bi-pencil-fill pe-0"></i>
-                                        </a>
-                                        <button type="button"
-                                            wire:click="deletedId({{ $vehicule->id }}, '{{ $vehicule->immatriculation }}' )"
-                                            data-bs-toggle="modal" data-bs-target="#kt_modal_supprimer"
-                                            class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
-                                            title="Supprimer">
-                                            <i class="bi bi-trash-fill pe-0"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="text-gray-600">{{ $vehicule->immatriculation }}</td>
+                            <td class="text-gray-600">{{ $vehicule->n_chassis }}</td>
+                            <td class="text-gray-600">{{ $vehicule->marque }}</td>
+                            <td class="text-gray-600">{{ $vehicule->modele }}</td>
+                            <td class="text-gray-600">{{ $vehicule->annee_fabrication }}</td>
+                            <td class="text-gray-600">{{ $vehicule->type_carburant }}</td>
+                            <td class="text-gray-600">{{ $vehicule->categorie }}</td>
+                            <td class="text-gray-600">{{ $vehicule->couleur }}</td>
+                            <td class="text-gray-600">{{ $vehicule->kilometrage_actuel }}</td>
+                            <td class="text-gray-600">{{ $vehicule->puissance_fiscale }}</td>
+                            <td class="text-gray-600">{{ $vehicule->compagnie_assurance }}</td>
+                            <td class="text-gray-600">{{ $vehicule->numero_de_police }}</td>
+                            <td class="text-gray-600">
+                                @if ($vehicule->photos->isNotEmpty())
+                                <a href="{{ asset('images/' . $vehicule->photos->first()->photo) }}" target="_blank">
+                                    <img src="{{ asset('images/' . $vehicule->photos->first()->photo) }}"
+                                        alt="Vehicule Image" class="w-20 h-20 object-cover" width="60" height="60">
+                                </a>
+                                @else
+                                <img src="{{ asset('images/0000transport.png') }}"
+                                    alt="Vehicule Image" class="w-20 h-20 object-cover" width="60" height="60">
+                                @endif
+                            </td>
+                            {{-- <td class="text-gray-600">
+                                @foreach($vehicule->photos as $photo)
+                                <a href="{{ asset('images/' . $photo->photo) }}" target="_blank">
+                                    <img src="{{ asset('images/' . $photo->photo) }}" alt="Vehicule Image"
+                                        class="w-20 h-20 object-cover" width="60" height="60">
+                                </a>
+                                @endforeach
+                            </td> --}}
+                            <td>
+                                <div class="d-flex justify-content-end flex-shrink-0">
+                                    <a href="{{ route('vehicules.show', $vehicule->id) }}"
+                                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                        data-bs-toggle="tooltip" data-bs-original-title="Voir détails"
+                                        title="Voir détails">
+                                        <i class="bi bi-eye-fill pe-0"></i>
+                                    </a>
+                                    <a href="{{ route('vehicules.edit', $vehicule->id) }}"
+                                        class="btn btn-icon btn-bg-light btn-active-color-info btn-sm me-1"
+                                        data-bs-toggle="tooltip" data-bs-original-title="Modifier" title="Modifier">
+                                        <i class="bi bi-pencil-fill pe-0"></i>
+                                    </a>
+                                    <button type="button"
+                                        wire:click="deletedId({{ $vehicule->id }}, '{{ $vehicule->immatriculation }}' )"
+                                        data-bs-toggle="modal" data-bs-target="#kt_modal_supprimer"
+                                        class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
+                                        title="Supprimer">
+                                        <i class="bi bi-trash-fill pe-0"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="9" class="text-center text-muted">Il n'y a pas de données à afficher..
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">Il n'y a pas de données à afficher..
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                     <!--end::Table body-->
@@ -140,8 +168,7 @@
                         </label>
                     </div>
                 </div>
-                <div
-                    class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
+                <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
                     {!! $vehicules->links('shared.pagination-style') !!}
                 </div>
             </div>

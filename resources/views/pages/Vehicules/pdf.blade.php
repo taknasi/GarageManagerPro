@@ -18,6 +18,10 @@
                         <th>Type de carburant</th>
                         <th>Categorie</th>
                         <th>Couleur</th>
+                        <th>Kilométrage actuel</th>
+                        <th>Puissance fiscale</th>
+                        <th>Compagnie d’assurance</th>
+                        <th>Numéro de police</th>
                         <th>Utilisateur</th>
                     </tr>
                 </thead>
@@ -25,7 +29,7 @@
                     @if ($vehicules = Session::get('vehicules'))
                         @forelse ($vehicules as $vehicule)
                             <tr>
-                                
+
                                 <td>{{ $vehicule->immatriculation }}</td>
                                 <td>{{ $vehicule->n_chassis }}</td>
                                 <td>{{ $vehicule->marque }}</td>
@@ -34,6 +38,10 @@
                                 <td>{{ $vehicule->type_carburant }}</td>
                                 <td>{{ $vehicule->categorie }}</td>
                                 <td>{{ $vehicule->couleur }}</td>
+                                <td>{{ $vehicule->kilometrage_actuel }}</td>
+                                <td>{{ $vehicule->puissance_fiscale }}</td>
+                                <td>{{ $vehicule->compagnie_assurance }}</td>
+                                <td>{{ $vehicule->numero_de_police }}</td>
                                 <td>{{ $vehicule->user->name }}</td>
                             </tr>
                         @empty

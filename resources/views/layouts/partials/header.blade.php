@@ -94,9 +94,9 @@
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('vehicules.create') ? 'active' : '' }}" href="{{ route('vehicules.create') }}">
                                     <span class="menu-icon">
-                                        <i class="bi bi-person-plus-fill fs-2"></i>
+                                        <i class="bi bi-car-front-fill"></i>
                                     </span>
-                                    <span class="menu-title">Nouveau Vehicules</span>
+                                    <span class="menu-title">Nouvelle Vehicule</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -105,7 +105,8 @@
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ request()->routeIs('vehicules.index') ? 'active' : '' }}" href="{{ route('vehicules.index') }}">
                                     <span class="menu-icon">
-                                        <i class="bi bi-people-fill fs-2"></i>
+                                        <i class="bi bi-car-front"></i>
+                                        <i class="bi bi-car-front"></i>
                                     </span>
                                     <span class="menu-title">Liste des vehicules</span>
                                 </a>
@@ -787,7 +788,7 @@
                             </div>
                         </div>
                         <!--end::Menu item-->
-                        
+
 
                         <!--begin::Menu separator-->
                         <div class="separator my-2"></div>
