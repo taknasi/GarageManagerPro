@@ -14,7 +14,7 @@ class CreateClientsTable extends Migration
     public function up()
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->increments('id');   
+            $table->increments('id');
             // Common fields
             $table->integer('id_client');
             $table->enum('type', ['particulier', 'societe'])->default('particulier');
@@ -37,7 +37,9 @@ class CreateClientsTable extends Migration
 
             // Adresse (commune à tous types de clients)
             $table->string('address')->nullable();
-            $table->string('city')->nullable();
+
+            $table->integer('ville_id')->unsigned();
+            $table->foreign('ville_id')->references('id')->on('villes');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');

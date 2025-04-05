@@ -98,7 +98,7 @@
                                 </td>
                                 <td class="text-gray-600">{{ $client->phone }}</td>
                                 <td class="text-gray-600">{{ $client->email }}</td>
-                                <td class="text-gray-600">{{ $client->city }}</td>
+                                <td class="text-gray-600">{{ $client->ville->ville }}</td>
                                 <td></td>
                                 <td>
                                     <div class="d-flex justify-content-end flex-shrink-0">

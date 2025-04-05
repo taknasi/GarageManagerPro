@@ -361,24 +361,37 @@
                                         @enderror
                                     </div>
 
-                                    <!-- CITY -->
+                                    <!-- Villes -->
                                     <div class="col-sm-6 col-xl-4 mb-5">
-                                        <label for="city" class="form-label">Ville :</label>
+                                        <label for="ville_id" class="form-label">Ville :</label>
                                         <div class="input-group">
                                             <div class="flex-fill">
-                                                <select name="city" id="city"
-                                                    class="form-select rounded-0 rounded-start @error('city') is-invalid @enderror">
-                                                    <option value="">Sélectionner une ville</option>
+                                                <select id="selVille" required
+                                                    class="form-select rounded-0 rounded-start @error('ville_id') is-invalid @enderror"
+                                                    name="ville_id" data-control="select2" data-placeholder="Sélectionner une ville"
+                                                    data-allow-clear="true">
+                                                    <option></option>
+                                                    @forelse ($villes as $ville)
+                                                        <option @if (old('ville_id') == $ville->id) selected @endif
+                                                            value="{{ $ville->id }}">
+                                                            {{ $ville->ville }}
+                                                        </option>
+                                                    @empty
+                                                    @endforelse
                                                 </select>
                                             </div>
-                                            <span class="input-group-text">
-                                                <i class="bi bi-geo-alt fs-2"></i>
-                                            </span>
-                                            @error('city')
-                                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}
-                                                </div>
-                                            @enderror
+                                            <button data-bs-toggle="modal" data-bs-target="#kt_modal_ville"
+                                                class="border border-secondary btn btn-add btn-icon btn-light-primary "
+                                                type="button">
+                                                <i class="la la-plus fs-3" data-bs-toggle="tooltip"
+                                                    data-bs-original-title="Ajouter une nouvelle ville" aria-label="Ajouter une nouvelle ville"></i>
+                                            </button>
                                         </div>
+                                        @error('ville_id')
+                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
 
                                     <!-- NOTES -->
@@ -428,6 +441,10 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('modals')
+    @include('shared.modal-ville') <!-- to add new ville -->
 @endsection
 
 @push('scripts')
@@ -539,6 +556,44 @@
                 };
             }
         }
+        // Function to fill the Ville select
+        window.addEventListener('fillSelectVille', event => {
+            $('#selVille').find('option').not(':first').remove();
+            // AJAX request
+            $.ajax({
+                url: '{{ route('get.ville') }}',
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    var len = 0;
+                    if (response['data'] != null) {
+                        len = response['data'].length;
+                    }
+
+                    if (len > 0) {
+
+                        // Read data and create <option >
+                        for (var i = 0; i < len; i++) {
+
+                            var id = response['data'][i].id;
+                            var ville = response['data'][i].ville;
+
+                            var option = "<option value='" + id + "'>" + ville +
+                                "</option>";
+
+                            $("#selVille").append(option);
+                        }
+                    }
+                },
+
+                error: function(data) {
+                    console.log('r');
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                }
+
+            });
+        });
 
         // Prevent double form submission
         document.addEventListener('DOMContentLoaded', function() {
@@ -632,36 +687,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const initialType = document.getElementById('type').value;
             toggleClientTypeFields(initialType);
-        });
-
-        // Moroccan cities data
-        const moroccanCities = [
-            'Agadir', 'Al Hoceima', 'Assilah', 'Azemmour', 'Azrou', 'Beni Mellal', 'Berkane', 'Berrechid',
-            'Casablanca', 'Chefchaouen', 'Dakhla', 'El Jadida', 'Errachidia', 'Essaouira', 'Fès', 'Fnideq',
-            'Guelmim', 'Ifrane', 'Kénitra', 'Khemisset', 'Khouribga', 'Ksar El Kebir', 'Laâyoune', 'Larache',
-            'Marrakech', 'Martil', 'Meknès', 'Mohammedia', 'Nador', 'Ouarzazate', 'Oued Zem', 'Oujda',
-            'Rabat', 'Safi', 'Salé', 'Sefrou', 'Settat', 'Sidi Bennour', 'Sidi Ifni', 'Sidi Kacem',
-            'Sidi Slimane', 'Skhirat', 'Tan-Tan', 'Tanger', 'Taroudant', 'Taza', 'Témara', 'Tétouan',
-            'Tiznit', 'Youssoufia', 'Zagora'
-        ];
-
-        // Initialize Select2 for city field
-        $(document).ready(function() {
-            $('#city').select2({
-                data: moroccanCities.map(city => ({
-                    id: city,
-                    text: city
-                })),
-                placeholder: 'Sélectionner une ville',
-                allowClear: true,
-                language: 'fr'
-            });
-
-            // Set initial value if exists
-            const initialCity = '{{ old('city') }}';
-            if (initialCity) {
-                $('#city').val(initialCity).trigger('change');
-            }
         });
     </script>
 @endpush

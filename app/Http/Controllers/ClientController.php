@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Models\Ville;
 use App\Traits\AlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,8 +34,9 @@ class ClientController extends Controller
         // Get the next ID for display
         $lastId = Client::latest('id_client')->value('id_client') ?? 0;
         $nextId = $lastId + 1;
+        $villes = Ville::orderby("ville", "asc")->get();
 
-        return view('pages.clients.create', compact('nextId'));
+        return view('pages.Clients.create', compact('nextId', 'villes'));
     }
 
     /**
@@ -58,7 +60,7 @@ class ClientController extends Controller
             $client->email = $request->email;
             $client->phone = $request->phone;
             $client->address = $request->address;
-            $client->city = $request->city;
+            $client->ville_id = $request->ville_id;
             $client->notes = $request->notes;
 
             // Type-specific fields
@@ -113,7 +115,8 @@ class ClientController extends Controller
     {
         try {
             $client = Client::findOrFail($id);
-            return view('pages.Clients.edit', compact('client'));
+            $villes = Ville::orderby("ville", "asc")->get();
+            return view('pages.Clients.edit', compact('client', 'villes'));
         } catch (ModelNotFoundException $e) {
             return redirect()->route('clients.index')
                 ->with('error', 'Client introuvable. Il a peut-être été supprimé.');
@@ -140,7 +143,7 @@ class ClientController extends Controller
             $client->email = $request->email;
             $client->phone = $request->phone;
             $client->address = $request->address;
-            $client->city = $request->city;
+            $client->ville_id = $request->ville_id;
             $client->notes = $request->notes;
 
             // Type-specific fields
@@ -211,5 +214,11 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             return response()->json(['exists' => false, 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function getVilles()
+    {
+        $ville['data'] = Ville::orderby("ville", "asc")->get();
+        return response()->json($ville);
     }
 }
